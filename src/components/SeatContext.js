@@ -8,7 +8,21 @@ const initialState = {
   seatsPerRow: 0,
 };
 
-const reducer = () => {};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "receive-seat-info-from-server": {
+      return {
+        ...state,
+        hasLoaded: true,
+        seats: action.seats,
+        numOfRows: action.numOfRows,
+        seatsPerRow: action.seatsPerRow,
+      };
+    }
+    default: 
+      throw new Error(`Unrecognized action: ${action.type}`)
+  }
+};
 
 export const SeatProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);

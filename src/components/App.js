@@ -3,18 +3,23 @@ import { SeatContext } from "./SeatContext";
 import GlobalStyles from "./GlobalStyles";
 
 function App() {
-  const { state: {numOfRows}, actions: { receiveSeatInfoFromServer }} = useContext(SeatContext) 
+  const {
+    state: { numOfRows },
+    actions: { receiveSeatInfoFromServer },
+  } = useContext(SeatContext);
 
-  useEffect(() => {
-    fetch('/api/seat-availability')
-      .then(res => res.json)
-      .then(data => receiveSeatInfoFromServer(data))
-  },[])
+  useEffect(async () => {
+    const seatAvailabilityHeaders = await fetch("/api/seat-availability");
+    const seatAvailabilityBody = await seatAvailabilityHeaders.json();
+    receiveSeatInfoFromServer(seatAvailabilityBody);
+    // fetch('/api/seat-availability')
+    //   .then(res => res.json)
+    //   .then(data => receiveSeatInfoFromServer(data))
+  }, []);
 
   return (
     <>
       <GlobalStyles />
-      
       This venue has {numOfRows} rows!
     </>
   );

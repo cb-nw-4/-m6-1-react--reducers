@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
+// import CircularProgress from '@material-ui/core/CircularProgress';
+import { SeatContext } from './SeatContext';
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
+import SeatSvg from '../assets/seat-available.svg'
 
 const TicketWidget = () => {
   // TODO: use values from Context
-  const numOfRows = 6;
-  const seatsPerRow = 6;
+  const {
+    state,
+    state: { numOfRows, seatsPerRow },
+    actions: { receiveSeatInfoFromServer },
+  } = React.useContext(SeatContext);
+  console.log(state);
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
@@ -23,10 +28,10 @@ const TicketWidget = () => {
             <RowLabel>Row {rowName}</RowLabel>
             {range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-
+              console.log(seatId);
               return (
                 <SeatWrapper key={seatId}>
-                  {/* TODO: Render the actual <Seat /> */}
+                  <Seat src={SeatSvg}/>
                 </SeatWrapper>
               );
             })}
@@ -60,5 +65,7 @@ const RowLabel = styled.div`
 const SeatWrapper = styled.div`
   padding: 5px;
 `;
+
+const Seat=styled.img``;
 
 export default TicketWidget;

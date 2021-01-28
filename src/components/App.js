@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { SeatContext } from './SeatContext';
 import GlobalStyles from './GlobalStyles';
+import TicketWidget from './TicketWidget';
 
 const App=()=>{
   const {
@@ -17,8 +18,7 @@ const App=()=>{
   return (
     <>
       <GlobalStyles />
-      TODO: write code
-      {numOfRows}
+      <TicketWidget />
     </>
   );
 };

@@ -10,8 +10,8 @@ const initialState = {
 };
 
 function reducer(state, action) {
-    console.log("action", action);
-    console.log("state", state);
+    // console.log("action", action);
+    // console.log("state", state);
 // TODO
     switch (action.type) {
         case 'receive-seat-info-from-server': {

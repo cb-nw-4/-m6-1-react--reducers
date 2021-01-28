@@ -1,16 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-// import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { SeatContext } from './SeatContext';
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
-import SeatSvg from '../assets/seat-available.svg'
+import Seat from './Seat';
+
 
 const TicketWidget = () => {
   // TODO: use values from Context
   const {
     state,
-    state: { numOfRows, seatsPerRow },
+    state: { numOfRows, seatsPerRow, seats },
     actions: { receiveSeatInfoFromServer },
   } = React.useContext(SeatContext);
   console.log(state);
@@ -19,7 +20,8 @@ const TicketWidget = () => {
   // with the hasLoaded flag
 
   return (
-    <Wrapper>
+    <>
+    {state.hasLoaded ? <Wrapper>
       {range(numOfRows).map(rowIndex => {
         const rowName = getRowName(rowIndex);
 
@@ -28,23 +30,28 @@ const TicketWidget = () => {
             <RowLabel>Row {rowName}</RowLabel>
             {range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-              console.log(seatId);
               return (
                 <SeatWrapper key={seatId}>
-                  <Seat src={SeatSvg}/>
+                  <Seat id={seatId}
+                        rowName={rowName}
+                        seatNumber={getSeatNum(seatIndex)}
+                        status={seats[seatId].isBooked ? "unavailable" : "available"}
+                        price={seats[seatId].price}
+                  />
+                  {console.log(rowName, getSeatNum(seatIndex))}
                 </SeatWrapper>
               );
             })}
           </Row>
         );
       })}
-    </Wrapper>
+    </Wrapper> : <CircularProgress />}
+    </>
   );
 };
 
 const Wrapper = styled.div`
-  background: #eee;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 3px;
   padding: 8px;
 `;
@@ -53,19 +60,21 @@ const Row = styled.div`
   display: flex;
   position: relative;
 
-  &:not(:last-of-type) {
+  /* &:not(:last-of-type) {
     border-bottom: 1px solid #ddd;
-  }
+  } */
 `;
 
 const RowLabel = styled.div`
+  margin-right:10px;
+  margin-top:20px;
   font-weight: bold;
 `;
 
 const SeatWrapper = styled.div`
-  padding: 5px;
+  background: #eee;
+  padding: 10px;
 `;
 
-const Seat=styled.img``;
 
 export default TicketWidget;

@@ -1,4 +1,6 @@
-export const SeatContext = React.createContext();
+import React, { createContext, useReducer } from 'react';
+
+export const SeatContext = createContext();
 
 const initialState = {
   hasLoaded: false,
@@ -8,11 +10,22 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-
+  switch (action.type) {
+    case 'receive-seat-info-from-server':
+      return {
+        ...state,
+        hasLoaded: true,
+        seats: action.seats,
+        numOfRows: action.numOfRows,
+        seatsPerRow: action.seatsPerRow
+      };
+    default:
+      throw new Error(`Action type ${action.type} not valid`);
+  }
 };
 
 export const SeatProvider = ({ children }) => {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const receiveSeatInfoFromServer = (data) => {
     dispatch({

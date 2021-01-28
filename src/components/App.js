@@ -2,10 +2,10 @@ import React, { useContext, useEffect } from 'react';
 
 import GlobalStyles from './GlobalStyles';
 import { SeatContext } from './SeatContext';
+import TicketWidit from './TicketWidget';
 
 const App = () => {
   const {
-    state: { numOfRows },
     actions: { receiveSeatInfoFromServer }
   } = useContext(SeatContext);
 
@@ -18,7 +18,7 @@ const App = () => {
   return (
     <>
       <GlobalStyles />
-      Number of rows: {numOfRows}
+      <TicketWidit />
     </>
   );
 };

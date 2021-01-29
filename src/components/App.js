@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useReducer } from 'react';
+import TicketWidget from "./TicketWidget";
 
 import { SeatContext } from "./SeatContext";
 
@@ -19,7 +20,8 @@ function App() {
   return (
     <>
       <GlobalStyles />
-      This venue has {numOfRows} rows!
+      <TicketWidget />
+      {/* This venue has {numOfRows} rows! */}
     </>
   );
 }

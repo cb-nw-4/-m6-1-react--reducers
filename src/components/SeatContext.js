@@ -14,10 +14,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         ...action.payload
-        // hasLoaded: true,
-        // seats: action.seats,
-        // numOfRows: action.numOfRows,
-        // seatsPerRow: action.seatsPerRow,
       };
     }
     default: 

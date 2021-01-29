@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
-import styled from 'styled-components'
+import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { SeatContext } from "./SeatContext";
 import { getRowName, getSeatNum } from "../helpers";
 import { range } from "../utils";
-import {Seat} from './Seat'
+import { Seat } from "./Seat";
 
 const TicketWidget = () => {
   const {
@@ -23,19 +23,26 @@ const TicketWidget = () => {
     return <CircularProgress />;
   }
 
+  console.log(seats)
+
   return (
     <Wrapper>
       {range(numOfRows).map((rowIndex) => {
         const rowName = getRowName(rowIndex);
 
         return (
-          <Seat rowIndex={rowIndex} rowName={rowName} seatsPerRow={seatsPerRow} getSeatNum={getSeatNum} seats={seats}></Seat>
+          <Seat key={rowName}
+            rowIndex={rowIndex}
+            rowName={rowName}
+            seatsPerRow={seatsPerRow}
+            getSeatNum={getSeatNum}
+            seats={seats}
+          ></Seat>
         );
       })}
     </Wrapper>
   );
 };
-
 
 const Wrapper = styled.div`
   background: #eee;
@@ -47,6 +54,5 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
 
 export default TicketWidget;

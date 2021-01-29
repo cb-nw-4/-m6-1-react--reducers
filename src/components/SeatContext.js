@@ -21,6 +21,8 @@ const reducer = (state, action) => {
   }
 };
 
+
+
 export const SeatProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 

@@ -1,17 +1,18 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled, { css } from "styled-components";
 import { range } from "../utils";
 import Tippy from "@tippy.js/react";
 import "tippy.js/dist/tippy.css";
 import seatAvailable from "../assets/seat-available.svg";
+import {BookingContext} from './BookingContext'
 
-export const Seat = ({
-  rowIndex,
-  rowName,
-  seatsPerRow,
-  getSeatNum,
-  seats,
-}) => {
+export const Seat = ({ rowIndex, rowName, seatsPerRow, getSeatNum, seats }) => {
+
+  const {
+    state: {status},
+    actions: { beginBookingProcess },
+  } = useContext(BookingContext)
+
   return (
     <InnerWrapper key={rowIndex}>
       <RowLabel>Row {rowName}</RowLabel>
@@ -19,18 +20,23 @@ export const Seat = ({
         {range(seatsPerRow).map((seatIndex) => {
           const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
           const seatInfo = seats[seatId];
-
+          
           return (
             <Tippy
               key={seatIndex}
               interactive={true}
               content={`Row ${rowName} - Seat ${seatIndex} - $${seatInfo.price}`}
             >
-              <SeatWrapper key={seatId}>
-                <ImageButton disabled={seatInfo.isBooked ? true : false}>
+              <ImageButton
+              disabled={seatInfo.isBooked ? true : false}
+              onClick={() => {
+                beginBookingProcess({status:'start', selectedSeatId: `${rowName}-${seatIndex}`, price: seatInfo.price })
+              }}
+              >
+                <SeatWrapper key={seatId}>
                   <ImageHolder src={seatAvailable} booked={seatInfo.isBooked} />
-                </ImageButton>
-              </SeatWrapper>
+                </SeatWrapper>
+              </ImageButton>
             </Tippy>
           );
         })}
@@ -43,7 +49,7 @@ const ImageButton = styled.button`
   background-color: none;
   border: none;
   outline: none;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;

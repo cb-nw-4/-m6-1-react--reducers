@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { SeatContext } from "./SeatContext";
 import { getRowName, getSeatNum } from "../helpers";
 import { range } from "../utils";
@@ -23,15 +24,14 @@ const TicketWidget = () => {
     return <CircularProgress />;
   }
 
-  console.log(seats)
-
   return (
     <Wrapper>
       {range(numOfRows).map((rowIndex) => {
         const rowName = getRowName(rowIndex);
 
         return (
-          <Seat key={rowName}
+          <Seat
+            key={rowName}
             rowIndex={rowIndex}
             rowName={rowName}
             seatsPerRow={seatsPerRow}

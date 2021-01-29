@@ -7,14 +7,11 @@ import { range } from '../utils';
 import { SeatContext } from './SeatContext';
 import SeatSrc from "../assets/seat-available.svg"
 
-const TicketWidget = ({ }) => {
-  // TODO: use values from Context
+const TicketWidget = () => {
   const {
     state: { numOfRows, seatsPerRow, hasLoaded, seats },
     // actions: { receiveSeatInfoFromServer },
   } = React.useContext(SeatContext);
-    // const numOfRows = {numOfRowsData};
-    // const seatsPerRow = {seatsPerRowData};
     console.log(numOfRows, seatsPerRow);
   
   
@@ -38,11 +35,21 @@ const TicketWidget = ({ }) => {
             {range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
               const seatInfo = seats[seatId];
-              console.log(seatInfo, 'seatInfo');
+              console.log(seatInfo.isBooked, 'seatInfo');
 
               return (
+                // <SeatWrapper key={seatId}>
+                //   {seatInfo.isBooked ? (
+                //     <>
+                //       <SeatBooked src={SeatSrc}/>
+                //       <div></div>
+                //     </>
+                //   ):(
+                //     <Seat src={SeatSrc}/>
+                //   )}
+                // </SeatWrapper>
                 <SeatWrapper key={seatId}>
-                  <Seat src={SeatSrc}/>
+                  <img className={seatInfo.isBooked ? "grayOut":""} src={SeatSrc}/>
                 </SeatWrapper>
               );
             })}
@@ -58,6 +65,8 @@ const Wrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 8px;
+  width: 710px;
+  margin: 70px auto;
 `;
 
 const Row = styled.div`
@@ -71,12 +80,17 @@ const Row = styled.div`
 
 const RowLabel = styled.div`
   font-weight: bold;
+  position: absolute;
+  left: -70px;
+  top: 20px;
 `;
 
 const SeatWrapper = styled.div`
   padding: 5px;
-`;
-const Seat = styled.img`
+
+  .grayOut{
+    filter: grayscale(100%);
+  }
 `;
 
 export default TicketWidget;

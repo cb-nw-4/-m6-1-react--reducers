@@ -15,7 +15,6 @@ import { BookingContext } from "./BookingContext";
 export const PurchaseModal = () => {
   const [creditCard, setCreditCard] = useState("");
   const [expiration, setExpiration] = useState("");
-
   const {
     state,
     actions: { cancelBookingProcess },
@@ -65,12 +64,18 @@ export const PurchaseModal = () => {
             id="outlined-error"
             placeholder="Credit card"
             variant="outlined"
+            onChange={(ev) => {
+              setCreditCard(ev.target.value)
+            }}
           ></TextField>
           <TextField
             // error
             id="outlined-error"
             placeholder="Expiration"
             variant="outlined"
+            onChange={(ev) => {
+              setExpiration(ev.target.value)
+            }}
           ></TextField>
           <Button variant="contained" size="large" color="primary">
             Purchase

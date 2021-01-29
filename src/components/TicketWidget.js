@@ -5,17 +5,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 import { SeatContext } from '../components/SeatContext';
-import { ReactComponent as Seat } from '../assets/seat-available.svg';
-import Tippy from '@tippy.js/react';
-import 'tippy.js/dist/tippy.css';
+import Seat from './Seat';
 
 const TicketWidget = () => {
   const {
     state: { numOfRows, seatsPerRow, seats, hasLoaded }
   } = useContext(SeatContext);
-
-  // TODO: implement the loading spinner <CircularProgress />
-  // with the hasLoaded flag
 
   return (
     <Wrapper>
@@ -29,16 +24,17 @@ const TicketWidget = () => {
               <RowLabel>Row {rowName}</RowLabel>
               {range(seatsPerRow).map(seatIndex => {
                 const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
+                const seat = seats[seatId];
 
                 return (
                   <SeatWrapper key={seatId}>
-                    <Tippy content={'Row ' + rowName + ', Seat ' + (seatIndex + 1) + ' - $' + seats[seatId].price}>
-                    {seats[seatId].isBooked ? 
-                      <SeatStyled grayscale="true" />
-                    :
-                      <SeatStyled grayscale="false" />
-                    }
-                    </Tippy>
+                    <Seat
+                      rowName={rowName}
+                      rowIndex={rowIndex}
+                      seatIndex={seatIndex}
+                      price={seat.price}
+                      status={seat.isBooked ? 'unavailable' : 'available'}
+                    />
                   </SeatWrapper>
                 );
               })}
@@ -87,18 +83,9 @@ const RowLabel = styled.div`
   padding-right: 20px;
 `;
 
-const RowContainer = styled.div`
-  width: 500px;
-`;
-
 const SeatWrapper = styled.div`
   padding: 5px;
   border-bottom: 1px solid #ddd;
 `;
-
-const SeatStyled = styled(Seat)`
-  filter: ${props => props.grayscale === 'true' ? 'grayscale(100%)' : null};
-`;
-
 
 export default TicketWidget;

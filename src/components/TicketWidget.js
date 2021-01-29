@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import Tippy from '@tippy.js/react';
-import 'tippy.js/dist/tippy.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { SeatContext } from './SeatContext';
+import  Seat from './Seat';
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
-import seat from "../assets/seat-available.svg";
+
 
 const TicketWidget = () => {  
   // TODO: use values from Context
@@ -31,15 +30,15 @@ const TicketWidget = () => {
             <RowLabel>Row {rowName}</RowLabel>
               {range(seatsPerRow).map(seatIndex => {
                 const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-                const isBooked = seats[seatId].isBooked;
+                const seat = seats[seatId];             
                 return (
-                  <SeatWrapper key={seatId} isBooked={isBooked}>
-                    <Tippy content={`Row ${rowName}, Seat ${getSeatNum(seatIndex)} - $ ${seats[seatId].price}`} enabled={!isBooked}>
-                      <SeatButton>
-                        <img src={seat} alt="seat"/>
-                      </SeatButton>
-                    </Tippy>
-                  </SeatWrapper>
+                  <Seat
+                    key={seatId}
+                    rowName={rowName}                   
+                    seatIndex={seatIndex}                   
+                    price={seat.price}
+                    status={seat.isBooked ? "unavailable" : "available"}
+                  />                  
                 );
               })}
             </Row>          
@@ -86,32 +85,6 @@ const RowLabel = styled.div`
   position: absolute;
   left: -80px;
   top: 20px;
-`;
-
-const SeatWrapper = styled.div`
-  padding: 5px;
-  filter: ${(p)=> (p.isBooked ? 'grayscale(100%)' : null)};
-`;
-
-const SeatButton = styled.button`
-  display: block;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  text-align: left;
-  
- // position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  outline: none;
-
-
-  &:active {
-    color: inherit;
-  }
 `;
 
 export default TicketWidget;

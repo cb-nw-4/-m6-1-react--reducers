@@ -12,6 +12,7 @@ const initialState = {
 const reducer = (state, action) => {
   switch(action.type) {
     case "receive-seat-info-from-server": {
+        console.log(action.seats);
       return {
         ...state,
         hasLoaded: true,

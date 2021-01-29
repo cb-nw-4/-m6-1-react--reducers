@@ -7,20 +7,32 @@ import seatAvailable from "../assets/seat-available.svg";
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 
+import Tippy from "@tippy.js/react";
+import "tippy.js/dist/tippy.css";
+
 const TicketWidget = () => {
   // TODO: use values from Context 
   const {
     state: { 
       numOfRows,
       seatsPerRow,
+      hasLoaded,
+      seats,
      },
     actions: { receiveSeatInfoFromServer },
   } = React.useContext(SeatContext);
 
-  // TODO: implement the loading spinner <CircularProgress />
-  // with the hasLoaded flag
+
+  if (!hasLoaded) {
+    return (
+    <Container>
+      <CircularProgress />
+    </Container>
+    )
+  }
 
   return (
+    <Container>
     <Wrapper>
       {range(numOfRows).map(rowIndex => {
         const rowName = getRowName(rowIndex);
@@ -31,35 +43,49 @@ const TicketWidget = () => {
             {range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
 
+
               return (
-                <SeatWrapper key={seatId}>
-                  <img alt="available seat" src={seatAvailable} />
-                </SeatWrapper>
+                <Tippy content={<span>Row {rowName}, Seat {seatIndex} – ${seats[seatId].price}</span>}>
+                  <SeatWrapper key={seatId}>
+                    {seats[seatId].isBooked === false ?
+                    <img alt="available seat" src={seatAvailable} /> : 
+                    <img alt="available seat" src={seatAvailable}  style={{filter: "grayscale(100%)"}} />
+                    }
+                  </SeatWrapper>
+                </Tippy>
               );
             })}
           </Row>
         );
       })}
     </Wrapper>
+    </Container>
   );
 };
+
+const Container = styled.div` 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vw;
+`;
 
 const Wrapper = styled.div`
   background: #eee;
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 8px;
-  width: 60%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 10%;
 `;
 
 const Row = styled.div`
   display: flex;
   position: relative;
+  align-items: center;
 
   &:not(:last-of-type) {
     border-bottom: 1px solid #ddd;
@@ -68,6 +94,9 @@ const Row = styled.div`
 
 const RowLabel = styled.div`
   font-weight: bold;
+  width: 80px;
+  color: black;
+  padding-right: 10px;
 `;
 
 const SeatWrapper = styled.div`

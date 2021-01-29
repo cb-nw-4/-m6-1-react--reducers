@@ -1,5 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {SeatContext} from './SeatContext';
+import TicketWidget from './TicketWidget';
 
 import GlobalStyles from './GlobalStyles';
 
@@ -22,6 +23,7 @@ function App() {
     <>
       <GlobalStyles />
       This venue has {numOfRows} rows!
+      <TicketWidget/>
     </>
   );
 }

@@ -6,6 +6,7 @@ import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 import { SeatContext } from '../components/SeatContext';
 import Seat from './Seat';
+import PurchaseModal from './PurchaseModal';
 
 const TicketWidget = () => {
   const {
@@ -41,6 +42,7 @@ const TicketWidget = () => {
               </Row>
             );
           })}
+          <PurchaseModal />
         </Seating>
       :
         <CircularProgress />

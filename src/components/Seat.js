@@ -5,7 +5,6 @@ import { ReactComponent as SeatImg } from '../assets/seat-available.svg';
 import Tippy from '@tippy.js/react';
 import 'tippy.js/dist/tippy.css';
 import { BookingContext } from './BookingContext';
-import PurchaseModal from './PurchaseModal';
 
 const Seat = ({ seatId, rowName, seatIndex, price, status }) => {
   const {
@@ -13,14 +12,11 @@ const Seat = ({ seatId, rowName, seatIndex, price, status }) => {
   } = useContext(BookingContext);
 
   return (
-    <>
     <Tippy content={'Row ' + rowName + ', Seat ' + (seatIndex + 1) + ' - $' + price}>
       <Button onClick={() => beginBookingProcess({ selectedSeatId: seatId, price: price })} disabled={status === 'unavailable' ? true : false}>
         <SeatStyled status={status}/>
       </Button>
     </Tippy>
-    <PurchaseModal />
-    </>
   );
 };
 

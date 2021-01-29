@@ -16,6 +16,12 @@ const reducer = (state, action) => {
         ...action.payload
       };
     }
+    case "cancel-booking-process": {
+      return {
+        ...state,
+        ...initialState
+      };
+    }
     default: 
       throw new Error(`Unrecognized action: ${action.type}`)
   }
@@ -29,9 +35,14 @@ export const BookingProvider = ({ children }) => {
       payload: data,
     });
   };
+  const cancelBookingProcess = () => {
+    dispatch({
+      type: 'cancel-booking-process'
+    })
+  }
   return (
     <BookingContext.Provider
-      value={{ state, actions: { beginBookingProcess } }}
+      value={{ state, actions: { beginBookingProcess, cancelBookingProcess } }}
     >
       {children}
     </BookingContext.Provider>

@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { SeatContext } from "./SeatContext";
 import GlobalStyles from "./GlobalStyles";
+import TicketWidget from "./TicketWidget";
+import styled from "styled-components";
 
 function App() {
   const {
@@ -8,21 +10,33 @@ function App() {
     actions: { receiveSeatInfoFromServer },
   } = useContext(SeatContext);
 
-  useEffect(async () => {
-    const seatAvailabilityHeaders = await fetch("/api/seat-availability");
-    const seatAvailabilityBody = await seatAvailabilityHeaders.json();
-    receiveSeatInfoFromServer(seatAvailabilityBody);
-    // fetch('/api/seat-availability')
-    //   .then(res => res.json)
-    //   .then(data => receiveSeatInfoFromServer(data))
-  }, []);
+  useEffect(() => {
+    const getSeatAvailability = async () => {
+      const seatAvailabilityHeaders = await fetch("/api/seat-availability");
+      const seatAvailabilityBody = await seatAvailabilityHeaders.json();
+      receiveSeatInfoFromServer(seatAvailabilityBody);
+    };
+    getSeatAvailability();
+  }, [receiveSeatInfoFromServer]);
 
+  
   return (
     <>
+    <Wrapper>
       <GlobalStyles />
-      This venue has {numOfRows} rows!
+      <TicketWidget>
+
+      </TicketWidget>
+    </Wrapper>
     </>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
 
 export default App;

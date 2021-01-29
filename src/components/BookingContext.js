@@ -23,7 +23,6 @@ const reducer = (state, action) => {
 
 export const BookingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state)
   const beginBookingProcess = (data) => {
     dispatch({
       type: "begin-booking-process",

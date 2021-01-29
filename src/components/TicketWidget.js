@@ -6,6 +6,7 @@ import { SeatContext } from "./SeatContext";
 import { getRowName, getSeatNum } from "../helpers";
 import { range } from "../utils";
 import { Seat } from "./Seat";
+import { PurchaseModal } from "./PurchaseModal";
 
 const TicketWidget = () => {
   const {
@@ -25,22 +26,25 @@ const TicketWidget = () => {
   }
 
   return (
-    <Wrapper>
-      {range(numOfRows).map((rowIndex) => {
-        const rowName = getRowName(rowIndex);
+    
+      <Wrapper>
+        <PurchaseModal/>
+        {range(numOfRows).map((rowIndex) => {
+          const rowName = getRowName(rowIndex);
 
-        return (
-          <Seat
-            key={rowName}
-            rowIndex={rowIndex}
-            rowName={rowName}
-            seatsPerRow={seatsPerRow}
-            getSeatNum={getSeatNum}
-            seats={seats}
-          ></Seat>
-        );
-      })}
-    </Wrapper>
+          return (
+            <Seat
+              key={rowName}
+              rowIndex={rowIndex}
+              rowName={rowName}
+              seatsPerRow={seatsPerRow}
+              getSeatNum={getSeatNum}
+              seats={seats}
+            ></Seat>
+          );
+        })}
+      </Wrapper>
+    
   );
 };
 

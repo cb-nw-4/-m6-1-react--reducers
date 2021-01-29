@@ -30,7 +30,7 @@ function reducer(state, action) {
 }
 
 const SeatProvider=({children})=>{
-    const [state, dispatch]=React.useReducer(reducer, initialState);
+    const [state, dispatch]=useReducer(reducer, initialState);
 
     const receiveSeatInfoFromServer = (data) => {
         dispatch({

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { SeatContext } from './SeatContext';
 import GlobalStyles from './GlobalStyles';
 import TicketWidget from './TicketWidget';
+import PurchaseModal from './PurchaseModal';
 
 const App=()=>{
   const {

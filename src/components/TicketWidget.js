@@ -14,7 +14,7 @@ const TicketWidget = () => {
     state: { numOfRows, seatsPerRow, seats },
     actions: { receiveSeatInfoFromServer },
   } = React.useContext(SeatContext);
-  console.log(state);
+  // console.log(state);
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
@@ -32,13 +32,12 @@ const TicketWidget = () => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
               return (
                 <SeatWrapper key={seatId}>
-                  <Seat id={seatId}
+                  <Seat seatId={seatId}
                         rowName={rowName}
                         seatNumber={getSeatNum(seatIndex)}
                         status={seats[seatId].isBooked ? "unavailable" : "available"}
                         price={seats[seatId].price}
                   />
-                  {console.log(rowName, getSeatNum(seatIndex))}
                 </SeatWrapper>
               );
             })}

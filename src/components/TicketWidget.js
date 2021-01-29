@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { SeatContext } from "./SeatContext";
-import seatAvailable from "../assets/seat-available.svg";
+import Seat from "./Seat";
+import Tippy from "@tippy.js/react";
+import "tippy.js/dist/tippy.css";
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 
-import Tippy from "@tippy.js/react";
-import "tippy.js/dist/tippy.css";
+
 
 const TicketWidget = () => {
   // TODO: use values from Context 
@@ -43,14 +44,10 @@ const TicketWidget = () => {
             {range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
 
-
               return (
                 <Tippy content={<span>Row {rowName}, Seat {seatIndex} – ${seats[seatId].price}</span>}>
                   <SeatWrapper key={seatId}>
-                    {seats[seatId].isBooked === false ?
-                    <img alt="available seat" src={seatAvailable} /> : 
-                    <img alt="available seat" src={seatAvailable}  style={{filter: "grayscale(100%)"}} />
-                    }
+                    <Seat status={seats[seatId].isBooked} />
                   </SeatWrapper>
                 </Tippy>
               );
@@ -82,6 +79,10 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const SeatWrapper = styled.div`
+  padding: 5px;
+`;
+
 const Row = styled.div`
   display: flex;
   position: relative;
@@ -99,8 +100,5 @@ const RowLabel = styled.div`
   padding-right: 10px;
 `;
 
-const SeatWrapper = styled.div`
-  padding: 5px;
-`;
 
 export default TicketWidget;

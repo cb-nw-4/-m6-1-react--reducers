@@ -7,7 +7,7 @@ import { getRowName, getSeatNum } from "../helpers";
 import { range } from "../utils";
 import Tippy from "@tippy.js/react";
 import 'tippy.js/dist/tippy.css';
-
+import Seat from './Seat'
 const TicketWidget = () => {
   const {
     state: { numOfRows, seatsPerRow, seats },
@@ -40,7 +40,7 @@ const TicketWidget = () => {
                 const seatInfo = seats[seatId];
                 
                 return (
-                  <Tippy interactive={true} content={`Row ${rowName} - Seat ${seatIndex} - $${seatInfo.price}`}>
+                  <Tippy key={seatIndex} interactive={true} content={`Row ${rowName} - Seat ${seatIndex} - $${seatInfo.price}`}>
                     <SeatWrapper key={seatId} onClick={() => {}}>
                       <ImageHolder
                         src={seatAvailable}

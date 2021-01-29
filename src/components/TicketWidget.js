@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import Tippy from '@tippy.js/react';
+import 'tippy.js/dist/tippy.css';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { SeatContext } from './SeatContext';
 
@@ -10,7 +12,7 @@ import seat from "../assets/seat-available.svg";
 const TicketWidget = () => {  
   // TODO: use values from Context
   const {
-    state: { numOfRows, seatsPerRow }  
+    state: { hasLoaded, numOfRows, seatsPerRow, seats }  
  } = useContext(SeatContext);
   
 
@@ -18,31 +20,37 @@ const TicketWidget = () => {
   // with the hasLoaded flag
 
   return (
-    <MainWrapper>    
-    <Wrapper>
-      {range(numOfRows).map(rowIndex => {
-        const rowName = getRowName(rowIndex);
+    <MainWrapper>   
+      {!hasLoaded ? <CircularProgress /> : 
+      <Wrapper>
+        {range(numOfRows).map(rowIndex => {
+          const rowName = getRowName(rowIndex);
 
-        return (  
-          <Row key={rowIndex}>
-          <RowLabel>Row {rowName}</RowLabel>
-            {range(seatsPerRow).map(seatIndex => {
-              const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-
-              return (
-                <SeatWrapper key={seatId}>
-                  <img src={seat} alt="happyM<eal"/>
-                </SeatWrapper>
-              );
-            })}
-          </Row>          
-        );
-      })}
-    </Wrapper>
+          return (  
+            <Row key={rowIndex}>
+            <RowLabel>Row {rowName}</RowLabel>
+              {range(seatsPerRow).map(seatIndex => {
+                const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
+                const isBooked = seats[seatId].isBooked;
+                return (
+                  <SeatWrapper key={seatId} isBooked={isBooked}>
+                    <Tippy content={`Row ${rowName}, Seat ${getSeatNum(seatIndex)} - $ ${seats[seatId].price}`} enabled={!isBooked}>
+                      <SeatButton>
+                        <img src={seat} alt="seat"/>
+                      </SeatButton>
+                    </Tippy>
+                  </SeatWrapper>
+                );
+              })}
+            </Row>          
+          );
+        })}
+      </Wrapper>
+      }
     </MainWrapper>
   );
 };
-
+//isBooked={seats.seatId.isBooked}
 const Wrapper = styled.div`
 display: inline-block;
 //flex-direction: column;
@@ -82,6 +90,28 @@ const RowLabel = styled.div`
 
 const SeatWrapper = styled.div`
   padding: 5px;
+  filter: ${(p)=> (p.isBooked ? 'grayscale(100%)' : null)};
+`;
+
+const SeatButton = styled.button`
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  
+ // position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+
+
+  &:active {
+    color: inherit;
+  }
 `;
 
 export default TicketWidget;

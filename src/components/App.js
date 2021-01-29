@@ -23,11 +23,13 @@ function App() {
   return (
     <>
     <Wrapper>
+
       <GlobalStyles />
       <TicketWidget>
 
       </TicketWidget>
     </Wrapper>
+   
     </>
   );
 }

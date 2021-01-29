@@ -11,6 +11,8 @@ const TicketWidget = () => {
     state: { numOfRows, seatsPerRow }
   } = useContext(SeatContext);
  
+  // const numOfRows = 6;
+  // const seatsPerRow = 6;
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
@@ -22,42 +24,57 @@ const TicketWidget = () => {
         const rowName = getRowName(rowIndex);
 
         return (
-          <Row key={rowIndex}>
-            {/* <RowLabel>Row {rowName}</RowLabel> */}
-            {range(seatsPerRow).map(seatIndex => {
-              const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
+          <InnerWrapper>
+              <RowLabel>Row {rowName}</RowLabel>
+              <Row key={rowIndex}>
+                {range(seatsPerRow).map(seatIndex => {
+                  const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
 
-              return (
-                <SeatWrapper key={seatId}>
-                  <img src={seatAvailable}/>
-                </SeatWrapper>
-              );
-            })}
-          </Row>
+                  return (
+                    <SeatWrapper key={seatId}>
+                      <img src={seatAvailable}/>
+                    </SeatWrapper>
+                  );
+                })}
+              </Row>
+          </InnerWrapper>
         );
       })}
     </Wrapper>
   );
 };
 
+const InnerWrapper = styled.div`
+  display: flex;
+  position: relative;
+`;
+
 const Wrapper = styled.div`
   background: #eee;
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Row = styled.div`
   display: flex;
   position: relative;
 
-  /* &:not(:last-of-type) {
+  &:not(:last-of-type) {
     border-bottom: 1px solid #ddd;
-  } */
+  }
 `;
 
 const RowLabel = styled.div`
   font-weight: bold;
+  align-self: center;
+  position: absolute;
+  left: -15%;
+  /* top: 100px; */
 `;
 
 const SeatWrapper = styled.div`

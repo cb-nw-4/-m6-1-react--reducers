@@ -16,31 +16,31 @@ const TicketWidget = () => {
     <Wrapper>
       {hasLoaded ?
         <Seating>
-        {range(numOfRows).map(rowIndex => {
-          const rowName = getRowName(rowIndex);
+          {range(numOfRows).map(rowIndex => {
+            const rowName = getRowName(rowIndex);
 
-          return (
-            <Row key={rowIndex}>
-              <RowLabel>Row {rowName}</RowLabel>
-              {range(seatsPerRow).map(seatIndex => {
-                const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-                const seat = seats[seatId];
+            return (
+              <Row key={rowIndex}>
+                <RowLabel>Row {rowName}</RowLabel>
+                {range(seatsPerRow).map(seatIndex => {
+                  const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
+                  const seat = seats[seatId];
 
-                return (
-                  <SeatWrapper key={seatId}>
-                    <Seat
-                      seatId={seatId}
-                      rowName={rowName}
-                      seatIndex={seatIndex}
-                      price={seat.price}
-                      status={seat.isBooked ? 'unavailable' : 'available'}
-                    />
-                  </SeatWrapper>
-                );
-              })}
-            </Row>
-          );
-        })}
+                  return (
+                    <SeatWrapper key={seatId}>
+                      <Seat
+                        seatId={seatId}
+                        rowName={rowName}
+                        seatIndex={seatIndex}
+                        price={seat.price}
+                        status={seat.isBooked ? 'unavailable' : 'available'}
+                      />
+                    </SeatWrapper>
+                  );
+                })}
+              </Row>
+            );
+          })}
         </Seating>
       :
         <CircularProgress />

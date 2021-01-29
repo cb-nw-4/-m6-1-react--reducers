@@ -18,6 +18,8 @@ const reducer = (state, action) => {
         selectedSeatId: action.selectedSeatId,
         price: action.price
       };
+    case 'cancel-booking-process':
+      return initialState;
     default:
       throw new Error (`Action type ${action.type} not valid`);
   }
@@ -27,18 +29,26 @@ export const BookingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const beginBookingProcess = (data) => {
-    console.log(data);
     dispatch({
       type: 'begin-booking-process',
       ...data
-    })
+    });
+  };
+
+  const cancelBookingProcess = () => {
+    dispatch({
+      type: 'cancel-booking-process'
+    });
   };
 
   return (
     <BookingContext.Provider
       value={{
         state,
-        actions: { beginBookingProcess }
+        actions: {
+          beginBookingProcess,
+          cancelBookingProcess
+        }
       }}
     >
       {children}

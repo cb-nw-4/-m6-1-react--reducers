@@ -29,8 +29,8 @@ const TicketWidget = () => {
                 return (
                   <SeatWrapper key={seatId}>
                     <Seat
+                      seatId={seatId}
                       rowName={rowName}
-                      rowIndex={rowIndex}
                       seatIndex={seatIndex}
                       price={seat.price}
                       status={seat.isBooked ? 'unavailable' : 'available'}

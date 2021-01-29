@@ -13,10 +13,11 @@ const reducer = (state, action) => {
     case "receive-seat-info-from-server": {
       return {
         ...state,
-        hasLoaded: true,
-        seats: action.seats,
-        numOfRows: action.numOfRows,
-        seatsPerRow: action.seatsPerRow,
+        ...action.payload
+        // hasLoaded: true,
+        // seats: action.seats,
+        // numOfRows: action.numOfRows,
+        // seatsPerRow: action.seatsPerRow,
       };
     }
     default: 
@@ -30,9 +31,11 @@ export const SeatProvider = ({ children }) => {
   const receiveSeatInfoFromServer = (data) => {
     dispatch({
       type: "receive-seat-info-from-server",
-      ...data,
+      payload: data
     });
   };
+
+  
 
   return (
     <SeatContext.Provider

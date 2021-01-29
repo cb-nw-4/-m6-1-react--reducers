@@ -1,48 +1,72 @@
-import React, {useContext} from 'react';
-import styled from 'styled-components';
-import seatAvailable from '../assets/seat-available.svg'
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {SeatContext} from './SeatContext'
-import { getRowName, getSeatNum } from '../helpers';
-import { range } from '../utils';
+import React, { useContext, useState, useEffect } from "react";
+import styled, { css } from "styled-components";
+import seatAvailable from "../assets/seat-available.svg";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { SeatContext } from "./SeatContext";
+import { getRowName, getSeatNum } from "../helpers";
+import { range } from "../utils";
+import Tippy from "@tippy.js/react";
+import 'tippy.js/dist/tippy.css';
 
 const TicketWidget = () => {
   const {
-    state: { numOfRows, seatsPerRow }
+    state: { numOfRows, seatsPerRow, seats },
   } = useContext(SeatContext);
- 
-  // const numOfRows = 6;
-  // const seatsPerRow = 6;
 
-  // TODO: implement the loading spinner <CircularProgress />
-  // with the hasLoaded flag
-  // <CircularProgress/>
+  console.log(seats);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  useEffect(() => {
+    if (numOfRows) {
+      setHasLoaded(true);
+    }
+  }, [numOfRows]);
+
+  if (!hasLoaded) {
+    return <CircularProgress />;
+  }
 
   return (
     <Wrapper>
-      {range(numOfRows).map(rowIndex => {
+      {range(numOfRows).map((rowIndex) => {
         const rowName = getRowName(rowIndex);
 
         return (
-          <InnerWrapper>
-              <RowLabel>Row {rowName}</RowLabel>
-              <Row key={rowIndex}>
-                {range(seatsPerRow).map(seatIndex => {
-                  const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-
-                  return (
-                    <SeatWrapper key={seatId}>
-                      <img src={seatAvailable}/>
+          <InnerWrapper key={rowIndex}>
+            <RowLabel>Row {rowName}</RowLabel>
+            <Row>
+              {range(seatsPerRow).map((seatIndex) => {
+                const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
+                const seatInfo = seats[seatId];
+                
+                return (
+                  <Tippy interactive={true} content={`Row ${rowName} - Seat ${seatIndex} - $${seatInfo.price}`}>
+                    <SeatWrapper key={seatId} onClick={() => {}}>
+                      <ImageHolder
+                        src={seatAvailable}
+                        booked={seatInfo.isBooked}
+                      />
                     </SeatWrapper>
-                  );
-                })}
-              </Row>
+                  </Tippy>
+                );
+              })}
+            </Row>
           </InnerWrapper>
         );
       })}
     </Wrapper>
   );
 };
+
+
+
+const ImageHolder = styled.img`
+  ${({ booked }) =>
+    booked &&
+    css`
+      filter: grayscale(100%);
+    `}
+`;
 
 const InnerWrapper = styled.div`
   display: flex;
@@ -74,7 +98,6 @@ const RowLabel = styled.div`
   align-self: center;
   position: absolute;
   left: -15%;
-  /* top: 100px; */
 `;
 
 const SeatWrapper = styled.div`

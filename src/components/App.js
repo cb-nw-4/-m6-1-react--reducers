@@ -15,9 +15,10 @@ function App() {
       const seatAvailabilityHeaders = await fetch("/api/seat-availability");
       const seatAvailabilityBody = await seatAvailabilityHeaders.json();
       receiveSeatInfoFromServer(seatAvailabilityBody);
+      console.log(seatAvailabilityBody)
     };
     getSeatAvailability();
-  }, [receiveSeatInfoFromServer]);
+  }, []);
 
   
   return (

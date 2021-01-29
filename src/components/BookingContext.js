@@ -22,6 +22,12 @@ const reducer = (state, action) => {
         ...initialState
       };
     }
+    case "purchase-ticket-request": {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
     default: 
       throw new Error(`Unrecognized action: ${action.type}`)
   }
@@ -29,6 +35,7 @@ const reducer = (state, action) => {
 
 export const BookingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log(state)
   const beginBookingProcess = (data) => {
     dispatch({
       type: "begin-booking-process",
@@ -40,9 +47,16 @@ export const BookingProvider = ({ children }) => {
       type: 'cancel-booking-process'
     })
   }
+  const purchaseTicketRequest = (data) => {
+    dispatch({
+      type: 'purchase-ticket-request',
+      payload: data,
+    })
+  }
+  
   return (
     <BookingContext.Provider
-      value={{ state, actions: { beginBookingProcess, cancelBookingProcess } }}
+      value={{ state, actions: { beginBookingProcess, cancelBookingProcess, purchaseTicketRequest }}}
     >
       {children}
     </BookingContext.Provider>

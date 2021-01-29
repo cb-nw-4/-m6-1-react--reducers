@@ -17,7 +17,7 @@ export const PurchaseModal = () => {
   const [expiration, setExpiration] = useState("");
   const {
     state,
-    actions: { cancelBookingProcess },
+    actions: { cancelBookingProcess, purchaseTicketRequest },
   } = useContext(BookingContext);
 
   return (
@@ -77,7 +77,14 @@ export const PurchaseModal = () => {
               setExpiration(ev.target.value)
             }}
           ></TextField>
-          <Button variant="contained" size="large" color="primary">
+          <Button variant="contained" size="large" color="primary"
+          onClick={() => {
+            purchaseTicketRequest({'status': 'awaiting-response', 'selectedSeatId': state.selectedSeatId,
+            'price': state.price
+          })
+          }}
+          
+          >
             Purchase
           </Button>
         </InputContainer>

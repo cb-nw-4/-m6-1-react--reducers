@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { SeatContext } from './SeatContext';
 import  Seat from './Seat';
-
+import PurchaseModal from './PurchaseModal';
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 
@@ -12,15 +12,14 @@ const TicketWidget = () => {
   // TODO: use values from Context
   const {
     state: { hasLoaded, numOfRows, seatsPerRow, seats }  
- } = useContext(SeatContext);
-  
+ } = useContext(SeatContext); 
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
 
   return (
     <MainWrapper>   
-      {!hasLoaded ? <CircularProgress /> : 
+      {!hasLoaded ? <CircularProgress /> : <>
       <Wrapper>
         {range(numOfRows).map(rowIndex => {
           const rowName = getRowName(rowIndex);
@@ -45,7 +44,9 @@ const TicketWidget = () => {
           );
         })}
       </Wrapper>
+       <PurchaseModal /></>
       }
+     
     </MainWrapper>
   );
 };

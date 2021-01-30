@@ -15,7 +15,7 @@ function App() {
           .then(res=>res.json())
           .then((json) => {                        
             if (json){
-              console.log(json);
+              console.log('fecth',json);
               receiveSeatInfoFromServer(json);            
             }             
         })

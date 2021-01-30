@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Tippy from '@tippy.js/react';
 import 'tippy.js/dist/tippy.css';
 import { getSeatNum } from '../helpers';
+import { BookingContext } from './BookingContext';
 import seatImg from "../assets/seat-available.svg";
 
+
 const Seat = ({rowName, seatIndex, price, status})=>{  
+
+    const {    
+        action: { beginBookingProcess },
+      } = useContext(BookingContext);
+
+    const handleClickSeatButton = (ev)=>{      
+        beginBookingProcess({ status: 'seat-selected',
+                              selectedSeatId: `${rowName}-${getSeatNum(seatIndex)}`,
+                              price})
+
+    };
+
     return(
+        <>
         <SeatWrapper status={status}>
-            <Tippy content={`Row ${rowName}, Seat ${getSeatNum(seatIndex)} - $ ${price}`} enabled={status === 'available'}>
-                <SeatButton disabled={status === 'unavailable'}> 
+            <Tippy content={`Row ${rowName}, Seat ${getSeatNum(seatIndex)} - $ ${price}`} enabled={status === 'available'} hideOnClick={true}>
+                <SeatButton onClick={handleClickSeatButton} disabled={status === 'unavailable'}> 
                     <img src={seatImg} alt="seat"/>
                 </SeatButton>
-            </Tippy>
+            </Tippy>            
         </SeatWrapper>
+       
+        </>
     );
 };
 

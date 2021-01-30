@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
@@ -56,16 +58,16 @@ const PurchaseModal=()=>{
             })
         })
         .then(res=>res.json())
-        .then(res=>console.log(res))
-        // .then(res=>{
-        //     if(res.message){
-        //         purchaseTicketFailure(res.message);
+        // .then(res=>console.log(res))
+        .then(res=>{
+            if(res.status !== 200){
+                purchaseTicketFailure(res.message);
                 
-        //     }
-        //     else{
-        //         purchaseTicketSuccess();
-        //     }
-        // })
+            }
+            else{
+                purchaseTicketSuccess();
+            }
+        })
         .catch(err=>console.log(err))
     }
     
@@ -86,23 +88,27 @@ const PurchaseModal=()=>{
                 </DialogContentText>
 
                 <TableContainer align="center" fontSize='16px'>
-                    <TableRow>
-                        <TableCell>Row</TableCell>
-                        <TableCell>Seat</TableCell>
-                        <TableCell>Price</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>{theRow}</TableCell>
-                        <TableCell>{theSeat}</TableCell>
-                        <TableCell>{price}</TableCell>
-                    </TableRow>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>Row</TableCell>
+                                <TableCell>Seat</TableCell>
+                                <TableCell>Price</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>{theRow}</TableCell>
+                                <TableCell>{theSeat}</TableCell>
+                                <TableCell>{price}</TableCell>
+                        </TableRow>
+                        </TableBody>
+                    </Table>
                 </TableContainer>
 
                 <DialogContentText style={{margin:'10px'}}>
                     Please enter your credit card details below.
                 </DialogContentText>
 
-                <form onClick={handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <span>
                         <TextField
                             id="card-number"

@@ -13,11 +13,10 @@ const Seat = ({rowName, seatIndex, price, status})=>{
         action: { beginBookingProcess },
       } = useContext(BookingContext);
 
-    const handleClickSeatButton = (ev)=>{      
+    const handleClickSeatButton = (ev)=>{     
         beginBookingProcess({ status: 'seat-selected',
                               selectedSeatId: `${rowName}-${getSeatNum(seatIndex)}`,
                               price})
-
     };
 
     return(

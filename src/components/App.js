@@ -14,8 +14,7 @@ function App() {
         fetch('/api/seat-availability')
           .then(res=>res.json())
           .then((json) => {                        
-            if (json){
-              console.log('fecth',json);
+            if (json){             
               receiveSeatInfoFromServer(json);            
             }             
         })

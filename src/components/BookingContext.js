@@ -30,8 +30,8 @@ const reducer = (state, action)=>{
                 error: null               
             }
         }
-        case 'purchase-ticket-failure' :{     
-            console.log('action.error', action)    
+        case 'purchase-ticket-failure' :{   
+             
             return {
                 ...state,
                 status: "error",   

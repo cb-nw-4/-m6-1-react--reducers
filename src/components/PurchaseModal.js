@@ -82,10 +82,8 @@ const PurchaseModal =({ close })=>{
         },
     })
         .then((res) => res.json())
-        .then((json) => {
-            console.log('jsonpsot', json);
-            if (json.status === 200) {
-                
+        .then((json) => {            
+            if (json.status === 200) {                
                 setCreditCard("");
                 setExpiration("");
                 purchaseTicketSuccess();
@@ -94,8 +92,7 @@ const PurchaseModal =({ close })=>{
                 purchaseTicketFailure(json.message)
             }
         })
-        .catch((error)=>{     
-            console.log('crashed');       
+        .catch((error)=>{    
             purchaseTicketFailure(error);
           })
   };

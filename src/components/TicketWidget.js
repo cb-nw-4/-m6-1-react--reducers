@@ -6,19 +6,20 @@ import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 
 import {SeatContext} from "./SeatContext";
+import {BookingContext} from "./BookingContext";
 import Seat from "./Seat";
 
 const TicketWidget = () => {
-  // TODO: use values from Context
-  //const numOfRows = 6;
-  //const seatsPerRow = 6;
+
   const {
     state: { hasLoaded, seats, numOfRows, seatsPerRow },
   } = useContext(SeatContext);
 
+  const { 
+    state: { status, error, selectedSeatId, price },
+    actions: {beginBookingProcess},
+  } = useContext(BookingContext);
 
-  // TODO: implement the loading spinner <CircularProgress />
-  // with the hasLoaded flag
   switch(hasLoaded){
     case false:
       return <CircularBox><CircularProgress /></CircularBox>;
@@ -47,6 +48,7 @@ const TicketWidget = () => {
                       height={36}
                       price={seat.price}
                       status={seat.isBooked ? "unavailable" : "available"}
+                      onClick={()=>beginBookingProcess(seatId,seat.price)}
                       />
                     </SeatWrapper>
                   );

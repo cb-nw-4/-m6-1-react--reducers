@@ -8,6 +8,7 @@ import "tippy.js/dist/tippy.css";
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
+import { BookingContext } from './BookingContext';
 
 
 
@@ -21,7 +22,12 @@ const TicketWidget = () => {
       seats,
      },
     actions: { receiveSeatInfoFromServer },
-  } = React.useContext(SeatContext);
+  } = useContext(SeatContext);
+
+  // const {
+  //   state: { status, selectedSeatId },
+  //   actions: {beginBookingProcess}
+  // } = useContext(BookingContext);
 
 
   if (!hasLoaded) {
@@ -47,7 +53,13 @@ const TicketWidget = () => {
               return (
                 <Tippy content={<span>Row {rowName}, Seat {seatIndex} – ${seats[seatId].price}</span>}>
                   <SeatWrapper key={seatId}>
-                    <Seat status={seats[seatId].isBooked} />
+                    <Seat 
+                      bookingStatus={seats[seatId].isBooked}
+                      rowName={rowName}
+                      seatIndex={seatIndex}
+                      price={seats[seatId].price}
+                      key={seatId}
+                    />
                   </SeatWrapper>
                 </Tippy>
               );

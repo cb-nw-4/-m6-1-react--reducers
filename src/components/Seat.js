@@ -1,16 +1,33 @@
-import React from "react";
+import React, {useContext} from "react";
 import seatAvailable from "../assets/seat-available.svg";
 import styled from "styled-components";
+import { BookingContext } from "./BookingContext";
+import { getSeatNum } from "../helpers";
 
-const Seat = ({rowName, seatIndex, width, height, price, status}) => {
+const Seat = ({bookingStatus, rowName, seatIndex, price}) => {
 
-    console.log(status);
+    const {
+        state: { status, selectedSeatId },
+        actions: { beginBookingProcess },
+      } = React.useContext(BookingContext);
+
+      const bookSeat = () => {
+        beginBookingProcess({
+            status: 'seat-selected',
+            selectedSeatId: `${rowName}-${getSeatNum(seatIndex)}`,
+            price,
+        })
+    };
 
   return (
     <div>
-      {status === false ?
-        <Button><img alt="available seat" src={seatAvailable} /></Button> : 
-        <Button disabled={true}><img alt="unavailable seat" src={seatAvailable}  style={{filter: "grayscale(100%)"}} /></Button>
+      {bookingStatus === false ?
+        <Button onClick={bookSeat}>
+          <img alt="available seat" src={seatAvailable} />
+        </Button> : 
+        <Button disabled={true}>
+          <img alt="unavailable seat" src={seatAvailable}  style={{filter: "grayscale(100%)"}} />
+        </Button>
       }
     </div>      
   )

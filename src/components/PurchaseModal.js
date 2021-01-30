@@ -59,7 +59,7 @@ const useStyles = makeStyles({
     }
   });
 
-const PurchaseModal =({ close })=>{
+const PurchaseModal =()=>{
     const [creditCard, setCreditCard] = React.useState("");
     const [expiration, setExpiration] = React.useState("");
     const {state: { status, error, selectedSeatId, price },
@@ -154,7 +154,7 @@ const PurchaseModal =({ close })=>{
                     {status === "awaiting-response" ? <CircularProgress size={25} color='inherit'/> : 'Purchase'}
                 </Button >
              </form>
-             {error &&
+             {status === "error" &&
                 <p className={classes.error} >{error}</p>}
 
             </Box>

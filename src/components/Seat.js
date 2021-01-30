@@ -19,17 +19,14 @@ const Seat = ({rowName, seatIndex, price, status})=>{
                               price})
     };
 
-    return(
-        <>
-        <SeatWrapper status={status}>
-            <Tippy content={`Row ${rowName}, Seat ${getSeatNum(seatIndex)} - $ ${price}`} enabled={status === 'available'} hideOnClick={true}>
+    return(       
+        <Tippy content={`Row ${rowName}, Seat ${getSeatNum(seatIndex)} - $ ${price}`} enabled={status === 'available'} hideOnClick={true}>
+            <SeatWrapper status={status}>            
                 <SeatButton onClick={handleClickSeatButton} disabled={status === 'unavailable'}> 
                     <img src={seatImg} alt="seat"/>
-                </SeatButton>
-            </Tippy>            
-        </SeatWrapper>
-       
-        </>
+                </SeatButton>                    
+            </SeatWrapper>
+        </Tippy>        
     );
 };
 

@@ -15,7 +15,7 @@ const reducer = (state, action)=>{
         case 'begin-booking-process' :{         
             return {
                 ...state,
-                status: action.status,
+                status: 'seat-selected',
                 selectedSeatId: action.selectedSeatId,
                 price: action.price
             }
@@ -45,6 +45,12 @@ const reducer = (state, action)=>{
                 error: null, 
                 selectedSeatId: null,
                 price: null            
+            }
+        }
+        case 'finish-booking-process' :{         
+            return {
+                ...state,
+                status: 'idle'       
             }
         }
         default: throw new Error('unrecognized action: ' + action.type);
@@ -88,6 +94,12 @@ export const BookingProvider = ({children})=>{
         });
     };
 
+    const finishBookingProcess = () => {
+        dispatch({
+            type: 'finish-booking-process',         
+        });
+    };
+
     return(
         <BookingContext.Provider
             value={{
@@ -97,7 +109,8 @@ export const BookingProvider = ({children})=>{
                     cancelBookingProcess,
                     purchaseTicketRequest,
                     purchaseTicketFailure,
-                    purchaseTicketSuccess
+                    purchaseTicketSuccess,
+                    finishBookingProcess
                 },
             }}
         >

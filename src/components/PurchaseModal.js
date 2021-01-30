@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import { BookingContext } from './BookingContext';
+import { SeatContext } from './SeatContext';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -63,7 +64,10 @@ const PurchaseModal =()=>{
     const [creditCard, setCreditCard] = React.useState("");
     const [expiration, setExpiration] = React.useState("");
     const {state: { status, error, selectedSeatId, price },
-           action: { cancelBookingProcess, purchaseTicketRequest,  purchaseTicketFailure,  purchaseTicketSuccess }} = useContext(BookingContext); 
+           action: { cancelBookingProcess, purchaseTicketRequest,  purchaseTicketFailure,  purchaseTicketSuccess }} = useContext(BookingContext);
+    const {    
+            action: { markSeatAsPurchased },
+          } = useContext(SeatContext); 
   const classes = useStyles();
 
   const handleSubmitpurchase = (ev)=>{
@@ -87,6 +91,7 @@ const PurchaseModal =()=>{
                 setCreditCard("");
                 setExpiration("");
                 purchaseTicketSuccess();
+                markSeatAsPurchased(selectedSeatId);
             } 
             else {
                 purchaseTicketFailure(json.message)

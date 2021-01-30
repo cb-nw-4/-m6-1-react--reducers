@@ -4,18 +4,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { SeatContext } from './SeatContext';
 import  Seat from './Seat';
 import PurchaseModal from './PurchaseModal';
+import SnackBar from './SnackBar';
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 
 
-const TicketWidget = () => {  
-  // TODO: use values from Context
+const TicketWidget = () => {   
   const {
     state: { hasLoaded, numOfRows, seatsPerRow, seats }  
- } = useContext(SeatContext); 
-
-  // TODO: implement the loading spinner <CircularProgress />
-  // with the hasLoaded flag
+ } = useContext(SeatContext);   
 
   return (
     <MainWrapper>   
@@ -44,18 +41,17 @@ const TicketWidget = () => {
           );
         })}
       </Wrapper>
-       <PurchaseModal /></>
+       <PurchaseModal />
+       <SnackBar />
+       </>       
       }
      
     </MainWrapper>
   );
 };
-//isBooked={seats.seatId.isBooked}
-const Wrapper = styled.div`
-display: inline-block;
-//flex-direction: column;
-//width: auto;
 
+const Wrapper = styled.div`
+  display: inline-block;
   background: #eee;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -63,17 +59,15 @@ display: inline-block;
 `;
 
 const MainWrapper = styled.div`
-  display: flex;
+  display: flex; 
   justify-content: center;
   align-items: center;
   height: 100vh;
 `;
 
-
 const Row = styled.div`
   display: flex;
-  position: relative;
-  
+  position: relative;  
 
   &:not(:last-of-type) {
     border-bottom: 1px solid #ddd;

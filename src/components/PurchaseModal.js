@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState} from "react";
 import Dialog from "@material-ui/core/Dialog";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -20,35 +20,43 @@ export const PurchaseModal = () => {
     actions: {
       cancelBookingProcess,
       purchaseTicketRequest,
-      purchaseTicketFailure, 
+      purchaseTicketFailure,
       purchaseTicketSuccess,
     },
   } = useContext(BookingContext);
 
-  const handleClick = async(ev) => {
-     ev.preventDefault();
+  const handleClick = (ev) => {
+    ev.preventDefault();
+    purchaseTicketRequest();
 
-    await purchaseTicketRequest({
-      status: "awaiting-response",
-      selectedSeatId: state.selectedSeatId,
-      price: state.price,
-    });
-
-    // await fetch("/api/book-seat", {
-    //   method: "POST",
-    //   body: JSON.stringify(),
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    // }).then((res) => res.json());
+    fetch("/api/book-seat", {
+      method: "POST",
+      body: JSON.stringify({
+        seatId: state.selectedSeatId,
+        creditCard: creditCard,
+        expiration: expiration,
+      }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.status !== 200) {
+          purchaseTicketFailure();
+          console.log(json.status)
+        } else {
+          purchaseTicketSuccess();
+        }
+      });
   };
 
-
+  console.log(state.status)
 
   return (
     <Dialog
-      open={state.status == "start" ? true : false}
+      open={state.status !== ("idle" || "awaiting-response")}
       onClose={() => {
         cancelBookingProcess();
       }}
@@ -108,7 +116,7 @@ export const PurchaseModal = () => {
             size="large"
             color="primary"
             onClick={(ev) => {
-              handleClick(ev)
+              handleClick(ev);
             }}
           >
             Purchase

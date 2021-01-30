@@ -13,41 +13,46 @@ const reducer = (state, action) => {
     case "begin-booking-process": {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     }
     case "cancel-booking-process": {
       return {
         ...state,
-        ...initialState
+        ...initialState,
       };
     }
     case "purchase-ticket-request": {
       return {
         ...state,
-        ...action.payload
+        status: "awaiting-response",
+        selectedSeatId: state.selectedSeatId,
+        price: state.price,
       };
     }
     case "purchase-ticket-failure": {
       return {
         ...state,
-        
+        status: "error",
+        error: "Please provide credit card information",
       };
     }
     case "purchase-ticket-success": {
       return {
         ...state,
-        
+        status: "purchased",
+        error: null,
+        selectedSeatId: null,
+        price: null,
       };
     }
-    default: 
-      throw new Error(`Unrecognized action: ${action.type}`)
+    default:
+      throw new Error(`Unrecognized action: ${action.type}`);
   }
 };
 
 export const BookingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state)
   const beginBookingProcess = (data) => {
     dispatch({
       type: "begin-booking-process",
@@ -56,33 +61,42 @@ export const BookingProvider = ({ children }) => {
   };
   const cancelBookingProcess = () => {
     dispatch({
-      type: 'cancel-booking-process'
-    })
-  }
+      type: "cancel-booking-process",
+    });
+  };
   const purchaseTicketRequest = (data) => {
     dispatch({
-      type: 'purchase-ticket-request',
+      type: "purchase-ticket-request",
       payload: data,
-    })
-  }
+    });
+  };
 
-  const purchaseTicketFailure= (data) => {
+  const purchaseTicketFailure = (data) => {
     dispatch({
-      type: 'purchase-ticket-request',
+      type: "purchase-ticket-request",
       payload: data,
-    })
-  }
+    });
+  };
 
   const purchaseTicketSuccess = (data) => {
     dispatch({
-      type: 'purchase-ticket-request',
+      type: "purchase-ticket-request",
       payload: data,
-    })
-  }
-  
+    });
+  };
+
   return (
     <BookingContext.Provider
-      value={{ state, actions: { beginBookingProcess, cancelBookingProcess, purchaseTicketRequest, purchaseTicketFailure, purchaseTicketSuccess }}}
+      value={{
+        state,
+        actions: {
+          beginBookingProcess,
+          cancelBookingProcess,
+          purchaseTicketRequest,
+          purchaseTicketFailure,
+          purchaseTicketSuccess,
+        },
+      }}
     >
       {children}
     </BookingContext.Provider>

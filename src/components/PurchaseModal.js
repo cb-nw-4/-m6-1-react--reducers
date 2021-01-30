@@ -1,17 +1,18 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
-// import Button from '@material-ui/core/Button';
 
 import { BookingContext } from './BookingContext';
 import { decodeSeatId } from '../helpers';
 
 const PurchaseModal = () => {
   const {
-    state: { selectedSeatId, price },
-    actions: { cancelBookingProcess }
+    state: { selectedSeatId, price, error },
+    actions: {
+      cancelBookingProcess,
+      purchaseTicketRequest
+    }
   } = useContext(BookingContext);
   const {rowName, seatNum } = decodeSeatId(selectedSeatId);
   const [creditCard, setCreditCard] = useState('');
@@ -29,15 +30,15 @@ const PurchaseModal = () => {
     }
   };
 
-  const handlePurchaseClick = (event) => {
-    event.preventDefault();
-  };
-
   return (
     <Dialog
       overlaystyle={{backgroundColor: 'transparent'}}
       open={selectedSeatId !== null}
-      onClose={cancelBookingProcess}
+      onClose={() => {
+        setCreditCard('');
+        setExpiration('');
+        cancelBookingProcess();
+      }}
     >
       <DialogWrapper>
         <Header>Purchase ticket</Header>
@@ -68,9 +69,10 @@ const PurchaseModal = () => {
               value={expiration}
               onChange={handleExpirationInput}
             />
-            <PurchaseButton onClick={handlePurchaseClick}>PURCHASE</PurchaseButton>
+            <PurchaseButton onClick={(event) => purchaseTicketRequest(event, selectedSeatId, creditCard, expiration)}>PURCHASE</PurchaseButton>
           </FormItemsContainer>
           </Form>
+          <ErrorMessage>{error}</ErrorMessage>
         </PaymentDetails>
       </DialogWrapper>
     </Dialog>
@@ -106,10 +108,9 @@ const Row = styled.div`
 `;
 
 const PaymentDetails = styled.div`
-  height: 150px;
   font-weight: bold;
   background-color: #eeeeee;
-  padding: 30px;
+  padding: 30px 30px 20px 30px;
   margin-bottom: 30px;
 `;
 
@@ -139,6 +140,12 @@ const PurchaseButton = styled.button`
   border-radius: 4px;
   font-size: 0.9rem;
   font-weight: bold;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  text-align: center;
+  margin-top: 20px;
 `;
 
 export default PurchaseModal;

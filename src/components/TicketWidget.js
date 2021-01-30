@@ -61,19 +61,13 @@ const Wrapper = styled.div`
 
 const Seating = styled.div`
   background: #eee;
-  /* border: 1px solid #ccc; */
   border-radius: 3px;
-  /* padding: 8px; */
   margin: 20px;
 `;
 
 const Row = styled.div`
   display: flex;
   position: relative;
-
-  /* &:not(:last-of-type) {
-    border-bottom: 1px solid #ddd;
-  } */
 `;
 
 const RowLabel = styled.div`

@@ -25,7 +25,7 @@ const SeatStyled = styled(SeatImg)`
 `;
 
 const Button = styled.button`
-  /* border: none; */
+  border: none;
 `;
 
 export default Seat;

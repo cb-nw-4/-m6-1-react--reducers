@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import GlobalStyles from './GlobalStyles';
+import { SeatContext } from './SeatContext';
+import TicketWidit from './TicketWidget';
 
-function App() {
+const App = () => {
+  const {
+    actions: { receiveSeatInfoFromServer }
+  } = useContext(SeatContext);
+
+  useEffect(() => {
+    fetch('/api/seat-availability')
+      .then(res => res.json())
+      .then(data => receiveSeatInfoFromServer(data));
+  }, []);
+
   return (
     <>
       <GlobalStyles />
-      TODO: write code
+      <TicketWidit />
     </>
   );
-}
+};
 
 export default App;

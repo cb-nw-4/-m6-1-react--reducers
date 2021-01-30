@@ -16,17 +16,17 @@ export const getSeatIndex = (seatNum) => seatNum - 1;
 //   return `${rowName}-${seatNum}`;
 // };
 
-// export const decodeSeatId = seatId => {
-//   if (!seatId) {
-//     return {};
-//   }
+export const decodeSeatId = seatId => {
+  if (!seatId) {
+    return {};
+  }
 
-//   const [rowName, seatNum] = seatId.split('-');
+  const [rowName, seatNum] = seatId.split('-');
 
-//   return {
-//     rowName,
-//     seatNum,
-//     rowIndex: getRowIndex(rowName),
-//     seatIndex: seatNum - 1,
-//   };
-// };
+  return {
+    rowName,
+    seatNum,
+    rowIndex: getRowIndex(rowName),
+    seatIndex: seatNum - 1,
+  };
+};

@@ -27,6 +27,28 @@ const reducer=(state, action)=>{
                 price: null,
             }
         }
+        case 'purchase-ticket-request':{
+            return{
+                ...state,
+                status: "awaiting-response",
+                error: null,
+            }
+        }
+        case 'purchase-ticket-failure':{
+            return{
+                ...state,
+                status: "error",
+                error: action.message,
+            }
+        }
+        case 'purchase-ticket-success':{
+            return{
+                status: "purchased",
+                error: null,
+                selectedSeatId: null,
+                price: null
+            }
+        }
         default: {
             return(
                 `Doesn't recognise action type ${action.type}.`
@@ -50,6 +72,24 @@ const BookingProvider=({children})=>{
             ...data,
         })
     }
+    const purchaseTicketRequest=(data)=>{
+        dispatch({
+            type:'purchase-ticket-request',
+            ...data,
+        })
+    }
+    const purchaseTicketFailure=(data)=>{
+        dispatch({
+            type:'purchase-ticket-failure',
+            ...data,
+        })
+    }
+    const purchaseTicketSuccess=(data)=>{
+        dispatch({
+            type:'purchase-ticket-success',
+            ...data,
+        })
+    }
 
     return(
         <BookingContext.Provider 
@@ -58,6 +98,9 @@ const BookingProvider=({children})=>{
                 actions:{
                     beginBookingProcess,
                     cancelBookingProcess,
+                    purchaseTicketRequest,
+                    purchaseTicketFailure,
+                    purchaseTicketSuccess,
                 }
             }}
         >

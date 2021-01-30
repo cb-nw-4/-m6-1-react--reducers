@@ -5,11 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { BookingContext } from './BookingContext';
 
@@ -17,8 +14,12 @@ const PurchaseModal=()=>{
     const {
         selectedSeatId, 
         price,
-        actions: {cancelBookingProcess},
+        actions: {
+            cancelBookingProcess,purchaseTicketRequest,
+            purchaseTicketFailure,
+            purchaseTicketSuccess,},
     } = React.useContext(BookingContext);
+
     const [creditCard, setCreditCard] = React.useState("");
     const [expiration, setExpiration] = React.useState("");
     const [theSeat, setTheSeat]=useState(null);
@@ -37,6 +38,36 @@ const PurchaseModal=()=>{
         setExpiration("");
         setCreditCard("");
     };
+
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
+        purchaseTicketRequest();
+        //sending POST request
+        fetch('/api/book-seat', {
+            method:'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "seatId" : selectedSeatId,
+                "creditCard" : creditCard,
+                "expiration" : expiration,
+            })
+        })
+        .then(res=>res.json())
+        .then(res=>console.log(res))
+        // .then(res=>{
+        //     if(res.message){
+        //         purchaseTicketFailure(res.message);
+                
+        //     }
+        //     else{
+        //         purchaseTicketSuccess();
+        //     }
+        // })
+        .catch(err=>console.log(err))
+    }
     
     return (
         <Wrapper>
@@ -54,7 +85,7 @@ const PurchaseModal=()=>{
                 You're purchasing <strong>1</strong> ticket for the price of ${price}.
                 </DialogContentText>
 
-                <TableContainer align="center">
+                <TableContainer align="center" fontSize='16px'>
                     <TableRow>
                         <TableCell>Row</TableCell>
                         <TableCell>Seat</TableCell>
@@ -71,7 +102,7 @@ const PurchaseModal=()=>{
                     Please enter your credit card details below.
                 </DialogContentText>
 
-                <form >
+                <form onClick={handleSubmit}>
                     <span>
                         <TextField
                             id="card-number"
@@ -93,8 +124,10 @@ const PurchaseModal=()=>{
                         />
                     </span>
                     <span>
-                        <Button onClick={handleClose} color="primary">
-                            Submit
+                        <Button color="primary"
+                                type="submit"
+                        >
+                            Purchase
                         </Button>
                     </span>
                 </form>
@@ -111,7 +144,7 @@ const Wrapper=styled.div`
 `;
 
 const ModalTitle=styled.h1`
-    margin:10px 0px 0px 10px;
+    margin:10px 0px 0px 20px;
 `;
 
 export default PurchaseModal;

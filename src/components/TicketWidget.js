@@ -1,14 +1,29 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
 import { SeatContext } from './SeatContext';
+import { BookingContext } from './BookingContext';
 import Seat from './Seat';
+import PurchaseModal from './PurchaseModal';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const TicketWidget = () => {
   const { state } = useContext(SeatContext);
+  const { 
+    status, 
+    price,
+    actions: {
+      dismissPurchase
+    }
+  } = useContext(BookingContext);
   
   const numOfRows = state.numOfRows;
   const seatsPerRow = state.seatsPerRow;
@@ -39,8 +54,8 @@ const TicketWidget = () => {
                         <Seat 
                           rowName={rowName}
                           seatIndex={seatIndex}
-                          price={seats[seatId].price}
-                          isBooked={seats[seatId].isBooked}
+                          price={seats[seatId] && seats[seatId].price}
+                          isBooked={seats[seatId] && seats[seatId].isBooked}
                         />
                       </SeatWrapper>
                   );
@@ -49,6 +64,18 @@ const TicketWidget = () => {
             </Row>
           );
         })}
+        <PurchaseModal 
+          price={price}
+        />
+        <Snackbar 
+          open={status === 'purchased'} 
+          autoHideDuration={6000}  
+          onClose={dismissPurchase}
+        >
+          <Alert onClose={dismissPurchase} severity="success">
+              Successfully purchased ticket! Enjoy the show.
+          </Alert>
+        </Snackbar>
       </Wrapper>
     }
     </>

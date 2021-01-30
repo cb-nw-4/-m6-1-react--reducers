@@ -36,7 +36,7 @@ router.post("/api/book-seat", async (req, res) => {
 
   await delay(Math.random() * 3000);
 
-  if (seats[seatId].isBooked) {
+  if (seats[seatId] && seats[seatId].isBooked) {
     return res.status(400).json({
       message: "This seat has already been booked!",
     });

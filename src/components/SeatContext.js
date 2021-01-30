@@ -26,7 +26,7 @@ function reducer(state, action){
                 ...state,               
                 seats: { ...state.seats,
                        [action.seatId]: {
-                                        ...state.seats[action.seatId].price, 
+                                        ...state.seats[action.seatId], 
                                          isBooked: true
                                         }                
                         }

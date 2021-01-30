@@ -21,7 +21,6 @@ function reducer(state, action) {
                 ...action.payload,
             };
         }
-
         default:
             throw new Error(`Unrecognized action: ${action.type}`);
     }

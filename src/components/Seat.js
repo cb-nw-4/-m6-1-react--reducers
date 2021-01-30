@@ -5,11 +5,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 const Seat = ({rowName, seatNum, width, height, price, status })=>{
-    /*{
-        </Tippy>
-     }*/
-
-
+    
     return <>
     <Tippy content={`Row ${rowName}, Seat ${seatNum} - $${price}`}>
         <Button 

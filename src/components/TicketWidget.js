@@ -1,39 +1,59 @@
-import React from 'react';
-import styled from 'styled-components';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React, { useContext, useState, useEffect } from "react";
+import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { getRowName, getSeatNum } from '../helpers';
-import { range } from '../utils';
+import { SeatContext } from "./SeatContext";
+import { getRowName, getSeatNum } from "../helpers";
+import { range } from "../utils";
+import { Seat } from "./Seat";
+import { PurchaseModal } from "./PurchaseModal";
+import { BookingContext } from "./BookingContext";
 
 const TicketWidget = () => {
-  // TODO: use values from Context
-  const numOfRows = 6;
-  const seatsPerRow = 6;
+  const {
+    state: { numOfRows, seatsPerRow, seats },
+  } = useContext(SeatContext);
 
-  // TODO: implement the loading spinner <CircularProgress />
-  // with the hasLoaded flag
+  const {
+    state: { status },
+  } = useContext(BookingContext);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  useEffect(() => {
+    if (numOfRows) {
+      setHasLoaded(true);
+    }
+  }, [numOfRows]);
+
+  if (!hasLoaded) {
+    return <CircularProgress />;
+  }
 
   return (
-    <Wrapper>
-      {range(numOfRows).map(rowIndex => {
-        const rowName = getRowName(rowIndex);
+    <div>
+      <Wrapper>
+        <PurchaseModal />
+        {range(numOfRows).map((rowIndex) => {
+          const rowName = getRowName(rowIndex);
 
-        return (
-          <Row key={rowIndex}>
-            <RowLabel>Row {rowName}</RowLabel>
-            {range(seatsPerRow).map(seatIndex => {
-              const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-
-              return (
-                <SeatWrapper key={seatId}>
-                  {/* TODO: Render the actual <Seat /> */}
-                </SeatWrapper>
-              );
-            })}
-          </Row>
-        );
-      })}
-    </Wrapper>
+          return (
+            <Seat
+              key={rowName}
+              rowIndex={rowIndex}
+              rowName={rowName}
+              seatsPerRow={seatsPerRow}
+              getSeatNum={getSeatNum}
+              seats={seats}
+            ></Seat>
+          );
+        })}
+      </Wrapper>
+      {status == "purchased" && (
+        <div style={{ textAlign: "center", marginTop: "1rem" }}>
+          You've successfully purchased your ticket!
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -42,23 +62,10 @@ const Wrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 8px;
-`;
-
-const Row = styled.div`
   display: flex;
-  position: relative;
-
-  &:not(:last-of-type) {
-    border-bottom: 1px solid #ddd;
-  }
-`;
-
-const RowLabel = styled.div`
-  font-weight: bold;
-`;
-
-const SeatWrapper = styled.div`
-  padding: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default TicketWidget;

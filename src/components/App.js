@@ -21,6 +21,7 @@ const App=()=>{
     <Wrapper>
       <GlobalStyles />
       <TicketWidget />
+      <PurchaseModal />
     </Wrapper>
   );
 };

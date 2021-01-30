@@ -1,41 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import { BookingContext } from './BookingContext';
 
-const PurchaseModal=({open, handleClose})=>{
+const PurchaseModal=()=>{
     const {
-        status,
-        error,
         selectedSeatId, 
-        price
+        price,
+        actions: {cancelBookingProcess},
     } = React.useContext(BookingContext);
+    const [creditCard, setCreditCard] = React.useState("");
+    const [expiration, setExpiration] = React.useState("");
+    const [theSeat, setTheSeat]=useState(null);
+    const [theRow, setTheRow]=useState(null);
 
+    useEffect(()=>{
+        if(selectedSeatId !== null){
+            const arr=selectedSeatId.split("-");
+            setTheRow(arr[0]);
+            setTheSeat(arr[1]);
+        }
+    },[selectedSeatId]);
+
+    const handleClose = () => {
+        cancelBookingProcess();
+        setExpiration("");
+        setCreditCard("");
+    };
     
-
     return (
-        <div>
+        <Wrapper>
         <Dialog id="modal" 
-                open={(selectedSeatId !== null) ? open : null} 
+                open={(selectedSeatId !== null) ? true : false} 
                 onClose={handleClose} 
                 aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">
+
+            <ModalTitle id="form-dialog-title" >
                 Purchase Ticket
-            </DialogTitle>
+            </ModalTitle>
+
             <DialogContent>
                 <DialogContentText>
-                    You are purchasing
-                </DialogContentText>
-            
-                <DialogContentText>
-                    {selectedSeatId} for ${price}
+                You're purchasing <strong>1</strong> ticket for the price of ${price}.
                 </DialogContentText>
 
-                <DialogContentText>
+                <TableContainer align="center">
+                    <TableRow>
+                        <TableCell>Row</TableCell>
+                        <TableCell>Seat</TableCell>
+                        <TableCell>Price</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>{theRow}</TableCell>
+                        <TableCell>{theSeat}</TableCell>
+                        <TableCell>{price}</TableCell>
+                    </TableRow>
+                </TableContainer>
+
+                <DialogContentText style={{margin:'10px'}}>
                     Please enter your credit card details below.
                 </DialogContentText>
 
@@ -45,6 +77,9 @@ const PurchaseModal=({open, handleClose})=>{
                             id="card-number"
                             label="Credit Card Number"
                             type="input"
+                            value={creditCard}
+                            required
+                            onChange={(ev)=>setCreditCard(ev.target.value)}
                         />
                     </span>
                     <span>
@@ -52,20 +87,31 @@ const PurchaseModal=({open, handleClose})=>{
                             id="expiration"
                             label="Expiration"
                             type="input"
+                            value={expiration}
+                            required
+                            onChange={(ev=>setExpiration(ev.target.value))}
                         />
                     </span>
                     <span>
                         <Button onClick={handleClose} color="primary">
-                            Subscribe
+                            Submit
                         </Button>
                     </span>
                 </form>
-            
+
             </DialogContent>
-            
+
         </Dialog>
-        </div>
+        </Wrapper>
     );
-}
+};
+
+const Wrapper=styled.div`
+    padding:20px;
+`;
+
+const ModalTitle=styled.h1`
+    margin:10px 0px 0px 10px;
+`;
 
 export default PurchaseModal;

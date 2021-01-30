@@ -14,31 +14,31 @@ const Seat=({seatId, rowName, seatNumber, status, price})=>{
         }
     } = React.useContext(BookingContext);
 
-    const [open, setOpen] = React.useState(false);
+    // const [open, setOpen] = React.useState(false);
 
     
-    const handleClickOpen = () => {
-            beginBookingProcess({seatId, price})
-            setOpen(true);
-    };
+    // const handleClickOpen = () => {
+    //         beginBookingProcess({seatId, price})
+    //         setOpen(true);
+    // };
 
-    const handleClose = () => {
-        cancelBookingProcess();
-        setOpen(false);
-    };
+    // const handleClose = () => {
+    //     cancelBookingProcess();
+    //     setOpen(false);
+    // };
 
     return(
         <>
-        <PurchaseModal 
+        {/* <PurchaseModal 
             open={open}
             handleClose={handleClose}
-        />
+        /> */}
         <Tippy interactive={true} content={`Row: ${rowName}, Seat: ${seatNumber}, Price: $${price}`}>
             <Button disabled={status==="unavailable" ? true : false}
-                    onClick={handleClickOpen}
+                    onClick={()=>{beginBookingProcess({seatId, price})}}
             >
                 <img    src={SeatSvg}
-                            style={{filter: status==="unavailable" ? "grayscale(100%)" : ""}}
+                        style={{filter: status==="unavailable" ? "grayscale(100%)" : ""}}
                     />
             </Button>
         </Tippy>

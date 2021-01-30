@@ -28,6 +28,18 @@ const reducer = (state, action) => {
         ...action.payload
       };
     }
+    case "purchase-ticket-failure": {
+      return {
+        ...state,
+        
+      };
+    }
+    case "purchase-ticket-success": {
+      return {
+        ...state,
+        
+      };
+    }
     default: 
       throw new Error(`Unrecognized action: ${action.type}`)
   }
@@ -53,10 +65,24 @@ export const BookingProvider = ({ children }) => {
       payload: data,
     })
   }
+
+  const purchaseTicketFailure= (data) => {
+    dispatch({
+      type: 'purchase-ticket-request',
+      payload: data,
+    })
+  }
+
+  const purchaseTicketSuccess = (data) => {
+    dispatch({
+      type: 'purchase-ticket-request',
+      payload: data,
+    })
+  }
   
   return (
     <BookingContext.Provider
-      value={{ state, actions: { beginBookingProcess, cancelBookingProcess, purchaseTicketRequest }}}
+      value={{ state, actions: { beginBookingProcess, cancelBookingProcess, purchaseTicketRequest, purchaseTicketFailure, purchaseTicketSuccess }}}
     >
       {children}
     </BookingContext.Provider>

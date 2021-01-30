@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,8 +17,34 @@ export const PurchaseModal = () => {
   const [expiration, setExpiration] = useState("");
   const {
     state,
-    actions: { cancelBookingProcess, purchaseTicketRequest },
+    actions: {
+      cancelBookingProcess,
+      purchaseTicketRequest,
+      purchaseTicketFailure, 
+      purchaseTicketSuccess,
+    },
   } = useContext(BookingContext);
+
+  const handleClick = async(ev) => {
+     ev.preventDefault();
+
+    await purchaseTicketRequest({
+      status: "awaiting-response",
+      selectedSeatId: state.selectedSeatId,
+      price: state.price,
+    });
+
+    // await fetch("/api/book-seat", {
+    //   method: "POST",
+    //   body: JSON.stringify(),
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    // }).then((res) => res.json());
+  };
+
+
 
   return (
     <Dialog
@@ -65,7 +91,7 @@ export const PurchaseModal = () => {
             placeholder="Credit card"
             variant="outlined"
             onChange={(ev) => {
-              setCreditCard(ev.target.value)
+              setCreditCard(ev.target.value);
             }}
           ></TextField>
           <TextField
@@ -74,16 +100,16 @@ export const PurchaseModal = () => {
             placeholder="Expiration"
             variant="outlined"
             onChange={(ev) => {
-              setExpiration(ev.target.value)
+              setExpiration(ev.target.value);
             }}
           ></TextField>
-          <Button variant="contained" size="large" color="primary"
-          onClick={() => {
-            purchaseTicketRequest({'status': 'awaiting-response', 'selectedSeatId': state.selectedSeatId,
-            'price': state.price
-          })
-          }}
-          
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            onClick={(ev) => {
+              handleClick(ev)
+            }}
           >
             Purchase
           </Button>

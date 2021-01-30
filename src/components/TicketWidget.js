@@ -86,7 +86,7 @@ const Wrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 8px;
-  width: 830px;
+  width: fit-content;
   margin: 70px auto;
 `;
 
@@ -108,14 +108,7 @@ const RowLabel = styled.div`
 
 const SeatWrapper = styled.div`
   padding: 5px;
-
-  .grayOut{
-    filter: grayscale(100%);
-  }
-  p{
-    color: black;
-    position: absolute;
-  }
+  /* border: solid black 2px; */
 `;
 
 export default TicketWidget;

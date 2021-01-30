@@ -15,12 +15,16 @@ const Seat = ({ rowIndex, rowName, seatIndex, width, height, price, status }) =>
     return(
         <Wrapper>
         {status ? (
-            <img className="grayOut" src ={SeatSrc}/>
+            <button disable={true}>
+                <img className="grayOut" src ={SeatSrc}/>
+            </button>
         ):(
             <Tippy
                 content={`Row ${rowName}, Seat ${seatIndex + 1} - $${price}`}
             >
-                <img onClick={handleOnClick} src={SeatSrc}/>
+                <button onClick={handleOnClick}>
+                    <img src={SeatSrc}/>
+                </button>
             </Tippy>
         )}
         </Wrapper>
@@ -28,15 +32,17 @@ const Seat = ({ rowIndex, rowName, seatIndex, width, height, price, status }) =>
 };
 
 const Wrapper = styled.div`
-  padding: 5px;
-
-  .grayOut{
-    filter: grayscale(100%);
-  }
-  p{
-    color: black;
-    position: absolute;
-  }
+    .grayOut{
+        filter: grayscale(100%);
+    }
+    p{
+        color: black;
+        position: absolute;
+    }
+    button{
+        outline: none;
+        border: none;
+    }
 `;
 
 export default Seat;

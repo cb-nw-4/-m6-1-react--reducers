@@ -71,17 +71,15 @@ export const BookingProvider = ({ children }) => {
     });
   };
 
-  const purchaseTicketFailure = (data) => {
+  const purchaseTicketFailure = () => {
     dispatch({
-      type: "purchase-ticket-request",
-      payload: data,
+      type: "purchase-ticket-failure",
     });
   };
 
-  const purchaseTicketSuccess = (data) => {
+  const purchaseTicketSuccess = () => {
     dispatch({
-      type: "purchase-ticket-request",
-      payload: data,
+      type: "purchase-ticket-success",
     });
   };
 

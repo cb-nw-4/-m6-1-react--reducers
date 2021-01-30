@@ -13,10 +13,8 @@ function App() {
   useEffect(() => {
     const getSeatAvailability = async () => {
       const seatAvailabilityHeaders = await fetch("/api/seat-availability");
-      const seatAvailabilityBody = await 
-      seatAvailabilityHeaders.json();
+      const seatAvailabilityBody = await seatAvailabilityHeaders.json();
       receiveSeatInfoFromServer(seatAvailabilityBody);
-  
     };
     getSeatAvailability();
   }, []);

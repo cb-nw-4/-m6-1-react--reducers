@@ -1,4 +1,4 @@
-import React, { useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -41,22 +41,15 @@ export const PurchaseModal = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
-      .then((json) => {
-        if (json.status !== 200) {
-          purchaseTicketFailure();
-          console.log(json.status)
-        } else {
-          purchaseTicketSuccess();
-        }
-      });
+    .then(response => response.status !== 200 ? purchaseTicketFailure() : purchaseTicketSuccess())
   };
 
-  console.log(state.status)
+  console.log(state.status);
+  
 
   return (
     <Dialog
-      open={state.status !== ("idle" || "awaiting-response")}
+      open={state.selectedSeatId !== null}
       onClose={() => {
         cancelBookingProcess();
       }}

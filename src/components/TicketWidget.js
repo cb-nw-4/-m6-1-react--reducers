@@ -7,12 +7,16 @@ import { getRowName, getSeatNum } from "../helpers";
 import { range } from "../utils";
 import { Seat } from "./Seat";
 import { PurchaseModal } from "./PurchaseModal";
+import { BookingContext } from "./BookingContext";
 
 const TicketWidget = () => {
   const {
     state: { numOfRows, seatsPerRow, seats },
   } = useContext(SeatContext);
 
+  const {
+    state: { status },
+  } = useContext(BookingContext);
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
@@ -26,9 +30,9 @@ const TicketWidget = () => {
   }
 
   return (
-    
+    <div>
       <Wrapper>
-        <PurchaseModal/>
+        <PurchaseModal />
         {range(numOfRows).map((rowIndex) => {
           const rowName = getRowName(rowIndex);
 
@@ -44,7 +48,12 @@ const TicketWidget = () => {
           );
         })}
       </Wrapper>
-    
+      {status == "purchased" && (
+        <div style={{ textAlign: "center", marginTop: "1rem" }}>
+          You've successfully purchased your ticket!
+        </div>
+      )}
+    </div>
   );
 };
 

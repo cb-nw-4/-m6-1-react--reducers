@@ -3,6 +3,8 @@ import { SeatContext } from "./SeatContext";
 import GlobalStyles from "./GlobalStyles";
 import TicketWidget from "./TicketWidget";
 import SeatIcon from "./SeatIcon";
+import Loading from "./Loading";
+
 function App() {
   const {
     actions: { receiveSeatInfoFromServer },
@@ -17,6 +19,7 @@ function App() {
   
   return (
     <>
+
       <GlobalStyles />
       <TicketWidget />
 

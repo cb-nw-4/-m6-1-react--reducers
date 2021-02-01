@@ -33,6 +33,7 @@ export const SeatProvider = ({ children }) => {
             ...data,
         });
     };
+    console.log(state)
 
     return(
         <SeatContext.Provider 

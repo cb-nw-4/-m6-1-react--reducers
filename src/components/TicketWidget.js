@@ -20,16 +20,18 @@ const TicketWidget = () => {
               <RowLabel>Row {rowName}</RowLabel>
               {range(seatsPerRow).map(seatIndex => {
                 const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
+                //console.log(seatId)
                 const seat = seats[seatId];
                 return (
                   <SeatWrapper key={seatId}>
                     <Seat
                       rowIndex={rowName}
+                      seatId={seatId}
                       seatIndex={getSeatNum(seatIndex)}
                       width={36}
                       height={36}
                       price={seat.price}
-                      status={seat.isBooked}
+                      seatStatus={seat.isBooked}
                     />
                   </SeatWrapper>
                 );

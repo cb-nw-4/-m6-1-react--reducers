@@ -22,6 +22,7 @@ for (let r = 0; r < row.length; r++) {
 router.get("/api/seat-availability", async (req, res) => {
   await delay(Math.random() * 3000);
 
+
   return res.json({
     seats: seats,
     numOfRows: 8,
@@ -60,11 +61,13 @@ router.post("/api/book-seat", async (req, res) => {
   lastBookingAttemptSucceeded = !lastBookingAttemptSucceeded;
 
   seats[seatId].isBooked = true;
+  
 
   return res.status(200).json({
     status: 200,
     success: true,
   });
+
 });
 
 module.exports = router;

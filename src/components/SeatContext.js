@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useReducer, createContext } from "react";
 
-export const SeatContext = React.createContext();
+export const SeatContext = createContext();
 
 const initialState = {
     hasloaded: false,
@@ -27,7 +27,7 @@ function reducer(state, action) {
 }
 
 export const SeatProvider = ({ children }) => {
-    const [state, dispatch] = React.useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     const receiveSeatInfoFromServer = (data) => {
         dispatch({

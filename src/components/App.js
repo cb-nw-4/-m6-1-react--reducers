@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import GlobalStyles from "./GlobalStyles";
 import { SeatContext } from "./SeatContext";
+import TicketWidget from "./TicketWidget";
 
 function App() {
     const {
-        state: { numOfRows },
         actions: { receiveSeatInfoFromServer },
-    } = React.useContext(SeatContext);
+    } = useContext(SeatContext);
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetch("/api/seat-availability")
             .then((res) => res.json())
             .then((data) => receiveSeatInfoFromServer(data));
@@ -17,7 +17,7 @@ function App() {
     return (
         <>
             <GlobalStyles />
-            This venue has {numOfRows} rows!
+            <TicketWidget />
         </>
     );
 }

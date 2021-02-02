@@ -1,24 +1,22 @@
-import React from 'react';
-import styled from 'styled-components';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React from "react";
+import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { getRowName, getSeatNum } from '../helpers';
-import { range } from '../utils';
-import { SeatContext } from './SeatContext';
+import { getRowName, getSeatNum } from "../helpers";
+import { range } from "../utils";
+import { SeatContext } from "./SeatContext";
 import SeatSrc from "../assets/seat-available.svg";
-import Tippy from '@tippyjs/react';
-import { Tooltip } from '@material-ui/core';
-import 'tippy.js/dist/tippy.css';
-import Seat from './Seat';
+import Tippy from "@tippyjs/react";
+import { Tooltip } from "@material-ui/core";
+import "tippy.js/dist/tippy.css";
+import Seat from "./Seat";
 
 const TicketWidget = () => {
   const {
     state: { numOfRows, seatsPerRow, hasLoaded, seats },
     // actions: { receiveSeatInfoFromServer },
   } = React.useContext(SeatContext);
-    console.log(numOfRows, seatsPerRow);
-  
-  
+  console.log(numOfRows, seatsPerRow);
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
@@ -26,26 +24,25 @@ const TicketWidget = () => {
   //   console.log('Clicked')
   // }
 
-  if(!hasLoaded){
-    return(
+  if (!hasLoaded) {
+    return (
       <Loading>
         <CircularProgress />
       </Loading>
-    )
+    );
   }
   return (
     <Wrapper>
-      {range(numOfRows).map(rowIndex => {
+      {range(numOfRows).map((rowIndex) => {
         const rowName = getRowName(rowIndex);
-
 
         return (
           <Row key={rowIndex}>
             <RowLabel>Row {rowName}</RowLabel>
-            {range(seatsPerRow).map(seatIndex => {
+            {range(seatsPerRow).map((seatIndex) => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
               const seatInfo = seats[seatId];
-              console.log(seatInfo,'seatInfo');
+              console.log(seatId, "seatInfo");
 
               return (
                 <SeatWrapper key={seatId}>
@@ -58,14 +55,15 @@ const TicketWidget = () => {
                       <img onClick={handleOnClick} src={SeatSrc}/>
                     </Tippy>
                   )} */}
-                  <Seat 
+                  <Seat
                     rowIndex={rowIndex}
                     seatIndex={seatIndex}
                     width={36}
                     height={36}
-                    price={seatInfo.price}
-                    status={seatInfo.isBooked ? true:false}
+                    currentSeatPrice={seatInfo.price}
+                    currentSeatStatus={seatInfo.isBooked ? true : false}
                     rowName={rowName}
+                    currentSeatId={seatId}
                   />
                 </SeatWrapper>
               );

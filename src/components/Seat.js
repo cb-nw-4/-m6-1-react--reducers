@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { ReactComponent as SeatIcon } from "../assets/seat-available.svg";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import {BookingContext} from "./BookingContext";
 
-const Seat = ({rowName, seatNum, width, height, price, status })=>{
-    
+
+const Seat = ({rowName, seatNum, seatId, width, height, price, status })=>{
+    const {
+        actions: {beginBookingProcess}
+    } = useContext(BookingContext);
+
     return <>
     <Tippy content={`Row ${rowName}, Seat ${seatNum} - $${price}`}>
         <Button 
             id="button" aria-describedby="tooltip"
-            disabled={status==="unavailable"? true:false}>
+            disabled={status==="unavailable"? true:false}
+            onClick={()=>beginBookingProcess(seatId,price)}>
             <SeatIcon style={{width:`${width}`, height:`${height}`}}/>
         </Button>
     </Tippy>

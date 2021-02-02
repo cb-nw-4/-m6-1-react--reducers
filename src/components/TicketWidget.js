@@ -8,6 +8,7 @@ import { range } from '../utils';
 import {SeatContext} from "./SeatContext";
 import {BookingContext} from "./BookingContext";
 import Seat from "./Seat";
+import PurchaseModal from './PurchaseModal';
 
 const TicketWidget = () => {
 
@@ -16,8 +17,7 @@ const TicketWidget = () => {
   } = useContext(SeatContext);
 
   const { 
-    state: { status, error, selectedSeatId, price },
-    actions: {beginBookingProcess},
+    state: { status, error, selectedSeatId, price }
   } = useContext(BookingContext);
 
   switch(hasLoaded){
@@ -44,11 +44,11 @@ const TicketWidget = () => {
                       <Seat
                       rowName={rowName}
                       seatNum={seatNum}
+                      seatId={seatId}
                       width={36}
                       height={36}
                       price={seat.price}
                       status={seat.isBooked ? "unavailable" : "available"}
-                      onClick={()=>beginBookingProcess(seatId,seat.price)}
                       />
                     </SeatWrapper>
                   );
@@ -57,6 +57,8 @@ const TicketWidget = () => {
             );
           })}
         </Wrapper>
+        <PurchaseModal/>
+
         </Box>
       );
 

@@ -20,6 +20,13 @@ const initialState = {
           price: action.price,
         };
 
+        case 'clear-selection':
+          return {
+            status: 'idle',
+            selectedSeatId: null,
+            price: null,
+          };
+
       case 'try-purchase':
         return {
           ...state,
@@ -32,18 +39,15 @@ const initialState = {
           ...state,
           status: 'error',
           error: true,
-        }
+        };
       
       case 'purchase-successful':
         return {
           ...initialState,
           status: 'purchased',
-        }
+        };
 
-      case 'return-to-itinial':
-        return {
-          ...initialState,
-        }
+
 
       default:
         throw new Error('Reducer Error:', action.type); 
@@ -60,6 +64,12 @@ const initialState = {
         seatId: seatId,
         price: price
       });
+      console.log("booking process");
+    };
+
+    const clearSelection = () => {
+      dispatch({type: "clear-selection"});
+      console.log("clear-selection");
     };
   
     return (
@@ -67,7 +77,7 @@ const initialState = {
         value={{
           state,
           actions: {
-            beginBookingProcess,
+            beginBookingProcess, clearSelection
           },
         }}
       >

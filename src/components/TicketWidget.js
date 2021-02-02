@@ -2,11 +2,13 @@ import React, {useContext} from 'react';
 import styled from 'styled-components';
 import { SeatContext } from './SeatContext';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import seatAvailable from "../assets/seat-available.svg";
-import Tooltip from '@material-ui/core/Tooltip';
+import Seat from './Seat';
+
+
 
 import { getRowName, getSeatNum } from '../helpers';
 import { range } from '../utils';
+import { BookingContext } from './BookingContext';
 
 const TicketWidget = () => {
   // TODO: use values from Context
@@ -20,6 +22,7 @@ const TicketWidget = () => {
     state: { numOfRows, seatsPerRow, hasLoaded, seats},
   } = useContext(SeatContext);
 
+  
 
   return (
     <Div>
@@ -36,17 +39,20 @@ const TicketWidget = () => {
               <RowLabel>Row {rowName}</RowLabel>
               {range(seatsPerRow).map(seatIndex => {
                 const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
-                const isAvailable = ! seats[seatId].isBooked
-                console.log(seats[seatId])
-                const infoSeat = `Row ${rowName}, Seat ${seatIndex} - $${seats[seatId].price}`
+                const seat = seats[seatId]
                 
                 return (
-      
                   <SeatWrapper key={seatId}>
                     {/* TODO: Render the actual <Seat /> */}
-                    <Tooltip title={infoSeat} placement="top">
-                      <Seat src={seatAvailable} className={`tooltip ${isAvailable ? '' : 'active'}`}/>
-                    </Tooltip>
+                    <Seat 
+                      rowIndex={rowIndex}
+                      rowName={rowName}
+                      seatIndex={seatIndex}
+                      width={36}
+                      height={36}
+                      price={seat.price}
+                      status={seat.isBooked ? "unavailable" : "available"}
+                    />
 
                   </SeatWrapper>
                 );
@@ -97,17 +103,8 @@ const SeatWrapper = styled.div`
   background: #eee;
   border-bottom: 1px solid #ccc;
 
-}
-`;
-
-const Seat = styled.img`
-  margin : 5px;
-
-  &.active{
-    filter: grayscale(100%);
-  }
-
-
 `
+
+
 
 export default TicketWidget;

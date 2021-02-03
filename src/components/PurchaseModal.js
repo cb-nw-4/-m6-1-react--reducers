@@ -29,7 +29,7 @@ const PurchaseModal = () =>{
 
   const { 
     state: { selectedSeatId,price },
-    actions: {clearSelection},
+    actions: {clearSelection, purchaseRequest, purchaseFailed, purchaseSuccess},
   } = useContext(BookingContext);
 
   const contentStyle = {color: 'black'};
@@ -47,9 +47,54 @@ const PurchaseModal = () =>{
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     padding: "16px 15px"};
 
+
+  const tryPurchase = ()=>{
+    //Await response
+    purchaseRequest();
+
+    // FETCH
+    if(creditCard&&expiration){
+      fetch("/api/book-seat",{
+        method:"POST",
+        body: JSON.stringify({
+          "seatId": selectedSeatId,
+          "creditCard": creditCard,
+          "expiration": expiration
+        }),
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"}
+      })
+      .then((res)=>res.json())
+      .then((res)=>{
+        console.log("Success",res);
+        if(res.success){
+          console.log("double success");
+          purchaseSuccess();
+        }else{
+          purchaseFailed("Server error. Please retry again.");
+        }
+      })
+      // Server error
+      .catch((err)=>{
+        console.log(err);
+        purchaseFailed("Server error. Please retry again.");
+      })
+    }else{
+      //Credit card error
+      console.log("Please provide credit card information!");
+      purchaseFailed("Please provide credit card information!");
+    }
+  };
+
     return (
     <>
-    <Dialog open={selectedSeatId !== null} onClose={()=>clearSelection()}>
+    <Dialog 
+    open={selectedSeatId !== null} 
+    onClose={()=>{
+      clearSelection();
+      setCreditCard('');
+      setExpiration('');}}>
     <DialogTitle id="form-dialog-title">Purchase ticket</DialogTitle>
     <DialogContent>
           <DialogContentText style={contentStyle}>
@@ -81,14 +126,14 @@ const PurchaseModal = () =>{
       <form>
     <TextField
             id="credit" style={inputStyling} required
-            placeholder="Credit Card"
+            placeholder="Credit Card" label="Credit Card"
             type="number" variant="outlined"
             onChange={(ev)=>updateCreditCart(ev)}
             value={creditCard}
           />
           <TextField
             id="exp" style={inputStyling} required
-            placeholder="Expiration"
+            placeholder="Expiration" label="Expiration"
             type="number" variant="outlined"
             onChange={(ev)=>updateExpiration(ev)}
             value={expiration}
@@ -96,7 +141,10 @@ const PurchaseModal = () =>{
           <Button 
           style={buttonStyle} 
           type="submit" 
-          onClick={(ev)=>ev.preventDefault()}>
+          onClick={(ev)=>{
+            ev.preventDefault();
+            tryPurchase();
+            }}>
             PURCHASE
           </Button>
           </form>

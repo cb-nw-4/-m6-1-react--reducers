@@ -20,34 +20,32 @@ const initialState = {
           price: action.price,
         };
 
+        case 'purchase-ticket-request':
+          return {
+            ...state,
+            status: 'awaiting-response',
+            error: null
+          };
+
         case 'clear-selection':
           return {
             status: 'idle',
             selectedSeatId: null,
             price: null,
           };
-
-      case 'try-purchase':
-        return {
-          ...state,
-          status: 'awaiting-response',
-          error: null
-        };
       
-      case 'incorrect-form':
+      case 'purchase-ticket-failure':
         return {
           ...state,
-          status: 'error',
+          status: action.error,
           error: true,
         };
       
-      case 'purchase-successful':
+      case 'purchase-ticket-success':
         return {
-          ...initialState,
+          ...state,
           status: 'purchased',
         };
-
-
 
       default:
         throw new Error('Reducer Error:', action.type); 
@@ -71,13 +69,32 @@ const initialState = {
       dispatch({type: "clear-selection"});
       console.log("clear-selection");
     };
-  
+
+    const purchaseRequest= () => {
+      dispatch({type: "purchase-ticket-request"});
+      console.log("purchase-ticket-request");
+    };
+
+    const purchaseFailed= (error) => {
+      dispatch({type: "purchase-ticket-failure",error});
+      console.log("purchase-ticket-failure");
+    };
+
+    const purchaseSuccess= () => {
+      dispatch({type: "purchase-ticket-success"});
+      console.log("purchase-ticket-success");
+    };
+
     return (
       <BookingContext.Provider
         value={{
           state,
           actions: {
-            beginBookingProcess, clearSelection
+            beginBookingProcess, 
+            clearSelection,
+            purchaseRequest,
+            purchaseFailed,
+            purchaseSuccess
           },
         }}
       >
